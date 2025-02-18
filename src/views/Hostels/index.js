@@ -158,34 +158,42 @@ const Hostel = () => {
           </Stack>
         </Stack>
         <TableStyle>
-          <Box width="100%">
+          <Box width="100%" sx={{ mt: '17px' }}>
             <Card>
               <TableContainer>
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t('Hostel Name')}</TableCell>
-                      <TableCell>{t('Owner Name')}</TableCell>
-                      <TableCell>{t('Email Id')}</TableCell>
-                      <TableCell>{t('Hostel Contact no')}</TableCell>
-                      <TableCell>{t('Owner Contact no')}</TableCell>
-                      <TableCell>{t('Action')}</TableCell>
+                      <TableCell align="center">{t('Hostel Name')}</TableCell>
+                      <TableCell align="center">{t('Owner Name')}</TableCell>
+                      <TableCell align="center">{t('Email Id')}</TableCell>
+                      <TableCell align="center">{t('Hostel Contact no')}</TableCell>
+                      <TableCell align="center">{t('Owner Contact no')}</TableCell>
+                      <TableCell align="center">{t('Action')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {hostelData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                       <TableRow key={row._id}>
                         <TableCell
+                          align="center"
+                          sx={{ verticalAlign: 'middle' }}
                           style={{ cursor: 'pointer', textDecoration: 'underline', color: 'blue' }}
                           onClick={() => handleNavigate(row._id)}
                         >
                           {row.hostelName}
                         </TableCell>
                         <TableCell>{row.ownerName}</TableCell>
-                        <TableCell>{row.email}</TableCell>
-                        <TableCell>{row.hostelPhoneNumber}</TableCell>
-                        <TableCell>{row.ownerPhoneNumber}</TableCell>
-                        <TableCell>
+                        <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                          {row.email}
+                        </TableCell>
+                        <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                          {row.hostelPhoneNumber}
+                        </TableCell>
+                        <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                          {row.ownerPhoneNumber}
+                        </TableCell>
+                        <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
                           <Stack direction="row">
                             <IconButton onClick={() => handleEdit(row._id)} aria-label="edit" style={{ color: 'green' }}>
                               <EditOutlined />
