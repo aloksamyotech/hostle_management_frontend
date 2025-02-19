@@ -17,6 +17,7 @@ import { useState, useEffect } from 'react';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import { t } from 'i18next';
+import url from '../../constant/url.js';
 const PurchaseInventory = (props) => {
   const { open, handleClose, hostelId, editPurchase } = props;
   console.log('props==>', props);
@@ -73,9 +74,9 @@ const PurchaseInventory = (props) => {
       try {
         let response;
         if (editPurchase) {
-          response = await axios.put(`${REACT_APP_BACKEND_URL}/canteen_inventory_purches/edit/${editPurchase._id}`, values);
+          response = await axios.put(`${url.purchaseInventory.edit}${editPurchase._id}`, values);
         } else {
-          response = await axios.post(`${REACT_APP_BACKEND_URL}/canteen_inventory_purches/add/${hostelId}`, values);
+          response = await axios.post(`${url.purchaseInventory.add}${hostelId}`, values);
         }
         console.log('response==>', response);
 

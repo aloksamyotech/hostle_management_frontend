@@ -33,6 +33,7 @@ import { EditOutlined, VisibilityOutlined, DeleteOutline } from '@mui/icons-mate
 import { styled } from '@mui/material/styles';
 import HomeIcon from '@mui/icons-material/Home';
 import { t } from 'i18next';
+import url from '../../constant/url';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -90,7 +91,7 @@ const WeeklyFoodMenu = () => {
   const fetchFoodMenuData = async (hostelId) => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/weeklyfoodmenu/index/${hostelId}`);
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/weeklyfoodmenu/index/${hostelId}`);
+      const response = await axios.get(`${url.weeklyFoodMenu.index}${hostelId}`);
       console.log('response===>', response);
       setAllFoodItem(response.data.result);
       setTotalCount(response.data.totalRecodes);
@@ -122,7 +123,7 @@ const WeeklyFoodMenu = () => {
   const handleConfirmDelete = async () => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/weeklyfoodmenu/delete/${deleteFoodId}`);
-      let response = await axios.delete(`${REACT_APP_BACKEND_URL}/weeklyfoodmenu/delete/${deleteFoodId}`);
+      let response = await axios.delete(`${url.weeklyFoodMenu.delete}${deleteFoodId}`);
       console.log('delete =====> response =====>', response);
       setOpenDeleteDialog(false);
       fetchFoodMenuData(hostelId);

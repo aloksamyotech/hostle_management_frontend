@@ -31,6 +31,7 @@ import moment from 'moment';
 import { styled } from '@mui/material/styles';
 import HomeIcon from '@mui/icons-material/Home';
 import { t } from 'i18next';
+import url from '../../constant/url.js';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -87,7 +88,7 @@ const InventoryConsumption = () => {
 
   const fetchConsumptionProducts = async (hostelId) => {
     try {
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/canteen_inventory_consume/index/${hostelId}`);
+      const response = await axios.get(`${url.consumptionInventory.index}${hostelId}`);
       console.log('response==>', response);
       setConsumeProducts(response.data.result);
       setTotalCount(response.data.totalRecodes);
@@ -119,7 +120,7 @@ const InventoryConsumption = () => {
   const handleConfirmDelete = async () => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/canteen_inventory_consume/delete/${deleteConsumeProduct}`);
-      let response = await axios.delete(`${REACT_APP_BACKEND_URL}/canteen_inventory_consume/delete/${deleteConsumeProduct}`);
+      let response = await axios.delete(`${url.consumptionInventory.delete}${deleteConsumeProduct}`);
       console.log('delete =====> response =====>', response);
 
       setOpenDeleteDialog(false);

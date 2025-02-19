@@ -15,6 +15,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 import { t } from 'i18next';
+import url from '../../constant/url.js';
 const AllExpenses = (props) => {
   const { open, handleClose, hostelId, editExpense } = props;
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -45,13 +46,13 @@ const AllExpenses = (props) => {
       try {
         let response;
         if (editExpense) {
-          response = await axios.put(`${REACT_APP_BACKEND_URL}/expense/edit/${editExpense._id}`, formData, {
+          response = await axios.put(`${url.expenditure.edit}${editExpense._id}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
           });
         } else {
-          response = await axios.post(`${REACT_APP_BACKEND_URL}/expense/add/${hostelId}`, formData, {
+          response = await axios.post(`${url.expenditure.add}${hostelId}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }

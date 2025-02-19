@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-// material-ui
 import { Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-// project imports
 import TotalStudentCountCard from './TotalStudentCountCard';
 import PopularCard from './PopularCard';
 import TotalAvailableBedsCount from './TotalAvailableBedsCount';
@@ -24,7 +22,7 @@ import AllComplaints from './AllComplaints';
 import { t } from 'i18next';
 import PendingFeeStudent from './PendingFeeStudentTable';
 import { useNavigate } from 'react-router';
-
+import url from '../../../constant/url.js';
 // ==============================|| SUBADMIN DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = () => {
@@ -44,22 +42,24 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   //Fetch Dashboard Data----------------
+
   async function fetchDashboardData(hostelId) {
     try {
       console.log('URL=>', `${REACT_APP_BACKEND_URL}/sudent_reservation/index/${hostelId}`);
-      const resForStudent = await axios.get(`${REACT_APP_BACKEND_URL}/sudent_reservation/index/${hostelId}`);
-      console.log(' response for resForStudent ========>', resForStudent);
+      const resForStudent = await axios.get(`${url.dashboard.studentReservation}${hostelId}`);
+      console.log(' response for resForStudent ======== rohit        ===>', resForStudent);
       setStudentCount(resForStudent.data.totalRecodes);
 
       console.log('URL=>', `${REACT_APP_BACKEND_URL}/room/index/${hostelId}`);
-      const resForTotalRooms = await axios.get(`${REACT_APP_BACKEND_URL}/room/index/${hostelId}`);
+      const resForTotalRooms = await axios.get(`${url.dashboard.totalRooms}${hostelId}`);
       console.log('response for resForTotalRooms -------========>', resForTotalRooms);
       setTotalRooms(resForTotalRooms.data.totalRecodes);
       setAvaRoomsCount(resForTotalRooms.data.availableRoomCount);
       setAvaBedsCount(resForTotalRooms.data.totalAvailableBeds);
 
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/expense/allexpenses/${hostelId}`);
-      const responseForExpense = await axios.get(`${REACT_APP_BACKEND_URL}/expense/allexpenses/${hostelId}`);
+
+      const responseForExpense = await axios.get(`${url.dashboard.allExpenses}${hostelId}`);
       console.log('response For Expense =======>', responseForExpense);
 
       const expensesData = responseForExpense.data.monthlyExpenses;
@@ -74,7 +74,8 @@ const Dashboard = () => {
       console.log('transformedData==rohit>', transformedData);
 
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/student_complaint/allComplaints/${hostelId}`);
-      const resForAllComplaints = await axios.get(`${REACT_APP_BACKEND_URL}/student_complaint/allComplaints/${hostelId}`);
+
+      const resForAllComplaints = await axios.get(`${url.dashboard.allComplaints}${hostelId}`);
       console.log('response for resForAllComplaints =======>', resForAllComplaints);
 
       const complaintData = resForAllComplaints.data.totalComplaints;
@@ -115,7 +116,7 @@ const Dashboard = () => {
             xs={12}
             sx={{ cursor: 'pointer' }}
             onClick={() => {
-              navigate('/dashboard/room');
+              navigate(`${url.dashboard.room}`);
             }}
           >
             <TotalRoomsCountCard isLoading={isLoading} totalRoomsCount={totalRooms} />
@@ -165,17 +166,6 @@ const Dashboard = () => {
         </Grid>
       </Grid>
 
-      {/* <Grid item xs={12}>
-        <Grid container spacing={gridSpacing}>
-          <Grid item xs={12} md={8}>
-            <TotalGrowthBarChart isLoading={isLoading} />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <PopularCard isLoading={isLoading} />
-          </Grid>
-        </Grid>
-      </Grid> */}
-
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item xs={12} md={6} lg={6}>
@@ -194,50 +184,6 @@ const Dashboard = () => {
       <Grid item xs={12}>
         <PendingFeeStudent />
       </Grid>
-
-      {/* <Grid item xs={12}>
-        <Grid container spacing={gridSpacing}>
-          <Grid item xs={12} md={6} lg={5}>
-            <AppTrafficBySite
-              title="Traffic by Site"
-              list={[
-                {
-                  name: 'FaceBook',
-                  value: 323234,
-                  icon: <Iconify icon={'eva:facebook-fill'} color="#1877F2" width={32} />
-                },
-                {
-                  name: 'Google',
-                  value: 341212,
-                  icon: <Iconify icon={'eva:google-fill'} color="#DF3E30" width={32} />
-                },
-                {
-                  name: 'Linkedin',
-                  value: 411213,
-                  icon: <Iconify icon={'eva:linkedin-fill'} color="#006097" width={32} />
-                },
-                {
-                  name: 'Twitter',
-                  value: 443232,
-                  icon: <Iconify icon={'eva:twitter-fill'} color="#1C9CEA" width={32} />
-                }
-              ]}
-            />
-          </Grid>
-          <Grid item xs={12} md={7}>
-            <AppTasks
-              title="Tasks"
-              list={[
-                { id: '1', label: 'Create FireStone Logo' },
-                { id: '2', label: 'Add SCSS and JS files if required' },
-                { id: '3', label: 'Stakeholder Meeting' },
-                { id: '4', label: 'Scoping & Estimations' },
-                { id: '5', label: 'Sprint Showcase' }
-              ]}
-            />
-          </Grid>
-        </Grid>
-      </Grid> */}
     </Grid>
   );
 };

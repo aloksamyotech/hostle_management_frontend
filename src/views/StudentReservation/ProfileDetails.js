@@ -50,6 +50,7 @@ import { Avatar } from '@mui/material';
 // import Cover from '../../../public/cover.jpg';
 import HomeIcon from '@mui/icons-material/Home';
 import Coverr from './cover.jpg';
+import url from '../../constant/url.js';
 const ProfileDetails = () => {
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   const [profileData, setProfileData] = useState(null);
@@ -89,7 +90,7 @@ const ProfileDetails = () => {
   const fetchStudentDetails = async () => {
     try {
       console.log('Making API With This URL==>', `${REACT_APP_BACKEND_URL}/sudent_reservation/view/${id}`);
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/sudent_reservation/view/${id}`);
+      const response = await axios.get(`${url.studentReservation.view}${id}`);
       console.log('API fetch StudentDetails response=>', response);
       setProfileData(response.data.result);
 
@@ -103,7 +104,7 @@ const ProfileDetails = () => {
   const fetchStudentPaymentData = async () => {
     try {
       console.log('Making API With This URL==>', `${REACT_APP_BACKEND_URL}/student_payment/paymenthistory/${id}`);
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/student_payment/paymenthistory/${id}`);
+      const response = await axios.get(`${url.studentReservation.paymenthistory}${id}`);
       console.log('API Payment Data response=>', response);
       setPaymentData(response.data.result);
       setTotalCount(response.data.totalRecodes);
@@ -115,7 +116,7 @@ const ProfileDetails = () => {
   const fetchVisitorData = async () => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/visitor/list/${id}`);
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/visitor/list/${id}`);
+      const response = await axios.get(`${url.studentReservation.visitorlist}${id}`);
       console.log(' fetchVisitorData response===>', response);
       setVisitorData(response.data.result);
       setTotalVisitorCount(response.data.totalRecodes);

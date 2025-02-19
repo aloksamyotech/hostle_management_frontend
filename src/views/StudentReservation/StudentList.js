@@ -29,6 +29,7 @@ import axios from 'axios';
 import { productPurchesValidationSchema } from 'views/Validation/validationSchema';
 import { useNavigate } from 'react-router';
 import AddNewReservation from './AddNewReservation';
+import url from 'constant/url';
 
 const StudentList = (props) => {
   const { studentData, totalCount, fetchReserveStudentData, hostelId } = props;
@@ -97,7 +98,7 @@ const StudentList = (props) => {
   const handleConfirmDelete = async () => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/deleteData/${deleteStudentId}`);
-      let response = await axios.delete(`${REACT_APP_BACKEND_URL}/sudent_reservation/deleteData/${deleteStudentId}`);
+      let response = await axios.delete(`${url.studentReservation.delete}${deleteStudentId}`);
       console.log('response for delete =====>', response);
       setOpenDeleteDialog(false);
       fetchReserveStudentData(hostelid);
@@ -115,14 +116,6 @@ const StudentList = (props) => {
     <>
       <AddNewReservation open={openAdd} handleClose={handleCloseAdd} editStudent={editStudent} hostelId={hostelId} />
 
-      {/* <Box sx={{ width: '100%' }}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: '0px' }}>
-            <Tabs value={activeTab} onChange={handleTabChange} aria-label="basic tabs example">
-              <Tab label='Student List'/>
-              <Tab label='Add Monthly Payment'/>
-            </Tabs>
-          </Box>
-        </Box> */}
       <TableStyle key={componentKey}>
         <Box width="100%" sx={{ mt: '10px' }}>
           <Card>

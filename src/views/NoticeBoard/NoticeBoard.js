@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import ClearIcon from '@mui/icons-material/Clear';
 import { FormControl, FormHelperText, FormLabel, Select, MenuItem } from '@mui/material';
 import { useFormik } from 'formik';
+import url from '../../constant/url.js';
 import { noticeValidationSchema } from 'views/Validation/validationSchema';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
@@ -49,10 +50,10 @@ const Notices = (props) => {
         let response;
         if (editNotice) {
           console.log('URL=>', `${REACT_APP_BACKEND_URL}/notice_board/edit/${editNotice._id}`);
-          response = await axios.put(`${REACT_APP_BACKEND_URL}/notice_board/edit/${editNotice._id}`, values);
+          response = await axios.put(`${url.notice.edit}${editNotice._id}`, values);
         } else {
           console.log('URL=>', `${REACT_APP_BACKEND_URL}/notice_board/add/${hostelId}`);
-          response = await axios.post(`${REACT_APP_BACKEND_URL}/notice_board/add/${hostelId}`, values);
+          response = await axios.post(`${url.notice.add}${hostelId}`, values);
         }
 
         console.log('response==>', response);

@@ -38,6 +38,7 @@ import Switch from '@mui/material/Switch';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import HomeIcon from '@mui/icons-material/Home';
 import { t } from 'i18next';
+import url from '../../constant/url.js';
 import { EditOutlined, DeleteOutline, VisibilityOutlined } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
@@ -88,7 +89,7 @@ const StudentReservation = () => {
   // Fetch All Student Data Here
   const fetchReserveStudentData = async (hostelId) => {
     try {
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/sudent_reservation/index/${hostelId}`);
+      const response = await axios.get(`${url.studentReservation.index}${hostelId}`);
       const students = response.data.result;
       setStudentsData(students);
       setTotalCount(response.data.totalRecodes);
@@ -142,7 +143,7 @@ const StudentReservation = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`${REACT_APP_BACKEND_URL}/sudent_reservation/deleteData/${deleteStudentId}`);
+      await axios.delete(`${url.studentReservation.delete}${deleteStudentId}`);
       setOpenDeleteDialog(false);
       fetchReserveStudentData(hostelId);
     } catch (error) {
@@ -184,7 +185,7 @@ const StudentReservation = () => {
       console.log('url up =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/updateStatus/${id}`, {
         status: newStatus ? 'active' : 'deactive'
       });
-      const response = await axios.put(`${REACT_APP_BACKEND_URL}/sudent_reservation/updateStatus/${id}`, {
+      const response = await axios.put(`${url.studentReservation.updateStatus}${id}`, {
         status: newStatus ? 'active' : 'deactive'
       });
       console.log('url down =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/updateStatus/${id}`, {
@@ -293,9 +294,7 @@ const StudentReservation = () => {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                           <img
                             src={
-                              row.studentphoto
-                                ? `${process.env.REACT_APP_BACKEND_URL}/uploads/students/${row.studentphoto}`
-                                : 'path/to/placeholder.jpg'
+                              row.studentphoto ? `${url.studentReservation.Uploadstudent}${row.studentphoto}` : 'path/to/placeholder.jpg'
                             }
                             alt="Student"
                             style={{ width: 50, height: 50, borderRadius: '50%' }}

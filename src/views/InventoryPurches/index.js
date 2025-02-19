@@ -32,6 +32,7 @@ import { styled } from '@mui/material/styles';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link as RouterLink } from 'react-router-dom';
 import { t } from 'i18next';
+import url from '../../constant/url.js';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -90,7 +91,8 @@ const InventoryPurches = () => {
   const fetchPurchaseInventory = async (hostelId) => {
     try {
       console.log('Url =>', `${REACT_APP_BACKEND_URL}/canteen_inventory_purches/index/${hostelId}`);
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/canteen_inventory_purches/index/${hostelId}`);
+      // const response = await axios.get(`${REACT_APP_BACKEND_URL}/canteen_inventory_purches/index/${hostelId}`);
+      const response = await axios.get(`${url.purchaseInventory.index}${hostelId}`);
       console.log('response==>', response);
       setPurchaseProduct(response.data.result);
       setTotalCount(response.data.totalRecodes);
@@ -123,7 +125,7 @@ const InventoryPurches = () => {
   const handleConfirmDelete = async () => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/canteen_inventory_purches/delete/${deletePurchaseProduct}`);
-      let response = await axios.delete(`${REACT_APP_BACKEND_URL}/canteen_inventory_purches/delete/${deletePurchaseProduct}`);
+      let response = await axios.delete(`${url.purchaseInventory.delete}${deletePurchaseProduct}`);
       console.log('delete =====> response =====>', response);
 
       setOpenDeleteDialog(false);

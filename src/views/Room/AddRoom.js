@@ -22,7 +22,7 @@ import { toast } from 'react-toastify';
 import { ArrowRightAlt } from '@mui/icons-material';
 import { useState } from 'react';
 import { t } from 'i18next';
-
+import urll from '../../constant/url.js';
 const roomValidationSchema = yup.object().shape({
   roomNumber: yup
     .string()
@@ -57,7 +57,7 @@ const AddRoom = ({ open, handleClose, hostelId, editRoom }) => {
       });
 
       try {
-        const url = editRoom ? `${REACT_APP_BACKEND_URL}/room/edit/${editRoom._id}` : `${REACT_APP_BACKEND_URL}/room/add/${hostelId}`;
+        const url = editRoom ? `${urll.room.edit}${editRoom._id}` : `${urll.room.add}${hostelId}`;
 
         const response = await axios({
           method: editRoom ? 'put' : 'post',
@@ -86,7 +86,7 @@ const AddRoom = ({ open, handleClose, hostelId, editRoom }) => {
 
   const Fetchtype = async () => {
     try {
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/room/gettype/${hostelId}`);
+      const response = await axios.get(`${urll.room.gettype}${hostelId}`);
       if (response) {
         setType(response?.data);
         console.log('response data is ========================', response);

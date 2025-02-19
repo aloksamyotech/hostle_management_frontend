@@ -32,6 +32,7 @@ import Iconify from '../../ui-component/iconify';
 import { width } from '@mui/system';
 import { t } from 'i18next';
 import { Link as RouterLink } from 'react-router-dom';
+import url from 'constant/url';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -94,7 +95,7 @@ const PaymentList = () => {
 
   const fetchPaymentData = async (hostelId) => {
     try {
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/student_payment/list/${hostelId}`);
+      const response = await axios.get(`${url.payments.list}${hostelId}`);
       setStudentPaymentData(response.data.result);
       setPaymentRecords(response.data.totalRecodes);
     } catch (error) {

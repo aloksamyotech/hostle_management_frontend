@@ -33,6 +33,7 @@ import { styled } from '@mui/material/styles';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link as RouterLink } from 'react-router-dom';
 import { t } from 'i18next';
+import url from '../../constant/url.js';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -89,7 +90,7 @@ const ResidentComplaints = () => {
   const fetchAllComplaint = async (hostelId) => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/student_complaint/index/${hostelId}`);
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/student_complaint/index/${hostelId}`, {});
+      const response = await axios.get(`${url.studentComplaint.index}${hostelId}`, {});
       console.log('complaint response ===>', response);
       setAllComplaints(response.data.result);
       setTotalCount(response.data.totalRecodes);
@@ -121,7 +122,7 @@ const ResidentComplaints = () => {
   const handleConfirmDelete = async () => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/student_complaint/deleteData/${deleteStudentId}`);
-      let response = await axios.delete(`${REACT_APP_BACKEND_URL}/student_complaint/deleteData/${deleteStudentId}`, {
+      let response = await axios.delete(`${url.studentComplaint.delete}${deleteStudentId}`, {
         headers: {
           Authorization: `Bearer ${Cookies.get('Admin_Token')}`
         }

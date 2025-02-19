@@ -14,7 +14,7 @@ import { productValidationSchema } from 'views/Validation/validationSchema';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { t } from 'i18next';
-
+import url from '../../constant/url.js';
 const AddInventory = (props) => {
   const { open, handleClose, hostelId, editInventory } = props;
   console.log('props==>', props);
@@ -45,10 +45,10 @@ const AddInventory = (props) => {
         let response;
         if (editInventory) {
           console.log('URL=>', `${REACT_APP_BACKEND_URL}/canteen_inventory/edit/${editInventory._id}`);
-          response = await axios.put(`${REACT_APP_BACKEND_URL}/canteen_inventory/edit/${editInventory._id}`, values);
+          response = await axios.put(`${url.canteenInventory.edit}${editInventory._id}`, values);
         } else {
           console.log('URL=>', `${REACT_APP_BACKEND_URL}/canteen_inventory/add/${hostelId}`);
-          response = await axios.post(`${REACT_APP_BACKEND_URL}/canteen_inventory/add/${hostelId}`, values);
+          response = await axios.post(`${url.canteenInventory.add}${hostelId}`, values);
         }
         console.log('response==>', response);
 

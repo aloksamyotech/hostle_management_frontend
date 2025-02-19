@@ -52,7 +52,7 @@ const subdashboard = {
       title: i18n.t('Dashboard'),
       type: 'item',
       url: '/dashboard/default',
-      icon: 'IconHome',
+      icon: IconHome,
       breadcrumbs: false
     },
     {
@@ -60,7 +60,7 @@ const subdashboard = {
       title: i18n.t('Payments'),
       type: 'item',
       url: '/dashboard/payments',
-      icon: 'IconReceipt',
+      icon: IconReceipt,
       breadcrumbs: false
     },
     {
@@ -68,7 +68,7 @@ const subdashboard = {
       title: i18n.t('Room Details'),
       type: 'item',
       url: '/dashboard/room',
-      icon: 'IconFileInvoice',
+      icon: IconFileInvoice,
       breadcrumbs: false
     },
     {
@@ -76,7 +76,7 @@ const subdashboard = {
       title: i18n.t('Student Reservation'),
       type: 'item',
       url: '/dashboard/student_reservation',
-      icon: 'IconUsers',
+      icon: IconUsers,
       breadcrumbs: false
     },
     {
@@ -84,7 +84,7 @@ const subdashboard = {
       title: i18n.t('Resident Complaints'),
       type: 'item',
       url: '/dashboard/complaints',
-      icon: 'IconFileStack',
+      icon: IconFileStack,
       breadcrumbs: false
     },
     {
@@ -92,21 +92,21 @@ const subdashboard = {
       title: i18n.t('Visitor Details'),
       type: 'item',
       url: '/dashboard/visitor',
-      icon: 'IconMail',
+      icon: IconMail,
       breadcrumbs: false
     },
     {
       id: '06',
       title: i18n.t('Inventory'),
       type: 'collapse',
-      icon: 'IconCategory',
+      icon: IconCategory,
       children: [
         {
           id: '101',
           title: i18n.t('Canteen Inventory'),
           type: 'item',
           url: '/dashboard/canteen_inventory',
-          icon: 'IconMenu',
+          icon: IconMenu,
           breadcrumbs: false
         },
         {
@@ -114,7 +114,7 @@ const subdashboard = {
           title: i18n.t('Purchase Inventory'),
           type: 'item',
           url: '/dashboard/purches_inventory',
-          icon: 'IconMenu',
+          icon: IconMenu,
           breadcrumbs: false
         },
         {
@@ -122,7 +122,7 @@ const subdashboard = {
           title: i18n.t('Consume Inventory'),
           type: 'item',
           url: '/dashboard/consume_inventory',
-          icon: 'IconMenu',
+          icon: IconMenu,
           breadcrumbs: false
         }
       ]
@@ -132,7 +132,7 @@ const subdashboard = {
       title: i18n.t('Expenditures'),
       type: 'item',
       url: '/dashboard/expenditures',
-      icon: 'IconFileInvoice',
+      icon: IconFileInvoice,
       breadcrumbs: false
     },
     {
@@ -140,7 +140,7 @@ const subdashboard = {
       title: i18n.t('Notice Board'),
       type: 'item',
       url: '/dashboard/notice_board',
-      icon: 'IconNotification',
+      icon: IconNotification,
       breadcrumbs: false
     },
     {
@@ -148,7 +148,7 @@ const subdashboard = {
       title: i18n.t('Weekly Food Menu'),
       type: 'item',
       url: '/dashboard/weekly_foodmenu',
-      icon: 'IconCategory',
+      icon: IconCategory,
       breadcrumbs: false
     },
     {
@@ -156,7 +156,7 @@ const subdashboard = {
       title: i18n.t('Room Type'),
       type: 'item',
       url: '/dashboard/type',
-      icon: 'IconCategory',
+      icon: IconCategory,
       breadcrumbs: false
     }
   ]

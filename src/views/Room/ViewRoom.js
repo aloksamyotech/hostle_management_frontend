@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
+import url from '../../constant/url.js';
 import { useNavigate } from 'react-router-dom';
 const ViewRoom = () => {
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -26,7 +27,7 @@ const ViewRoom = () => {
 
   const fetchRoomDetails = async () => {
     try {
-      const { data } = await axios.get(`${REACT_APP_BACKEND_URL}/room/view/${id}`);
+      const { data } = await axios.get(`${url.room.view}${id}`);
       setRoomDetails(data?.result);
       setbedDetails(data?.result.bedBookings);
       console.log('data=========================>rohit malviya', data.result._id);

@@ -17,6 +17,7 @@ import { productConsumeValidationSchema } from 'views/Validation/validationSchem
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
 import { t } from 'i18next';
+import url from '../../constant/url.js';
 const ConsumptionInventory = (props) => {
   const { open, handleClose, hostelId, editConsumeProduct } = props;
   console.log('props==>', props);
@@ -25,7 +26,7 @@ const ConsumptionInventory = (props) => {
 
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   const [loading, setLoading] = useState(false);
-  //When Found editConsumeProduct Data
+
   useEffect(() => {
     if (open && editConsumeProduct) {
       const formattedDate = moment(editConsumeProduct.date).format('YYYY-MM-DD');
@@ -37,11 +38,10 @@ const ConsumptionInventory = (props) => {
     }
   }, [open, editConsumeProduct]);
 
-  //Get All Purchased Product Which Added
   useEffect(() => {
     if (open) {
       axios
-        .get(`${REACT_APP_BACKEND_URL}/canteen_inventory_purches/index/${hostelId}`)
+        .get(`${url.consumptionInventory.index}${hostelId}`)
         .then((response) => {
           console.log('Purchase Products ==>', response);
 
@@ -71,12 +71,12 @@ const ConsumptionInventory = (props) => {
       try {
         let response;
         if (editConsumeProduct) {
-          response = await axios.put(`${REACT_APP_BACKEND_URL}/canteen_inventory_consume/edit/${editConsumeProduct._id}`, values);
+          response = await axios.put(`${url.consumptionInventory.edit}${editConsumeProduct._id}`, values);
           if (response == 200) {
             toast.success('update successfully');
           }
         } else {
-          response = await axios.post(`${REACT_APP_BACKEND_URL}/canteen_inventory_consume/add/${hostelId}`, values);
+          response = await axios.post(`${url.consumptionInventory.add}${hostelId}`, values);
           if (response.status === 200) {
             toast.success('Consume Added sussecesfully');
           }
@@ -101,7 +101,6 @@ const ConsumptionInventory = (props) => {
     }
   });
 
-  //For Reset Feilds When Add New
   useEffect(() => {
     if (open && !editConsumeProduct) {
       formik.resetForm();

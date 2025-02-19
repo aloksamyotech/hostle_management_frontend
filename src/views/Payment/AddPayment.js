@@ -24,6 +24,7 @@ import { paymentValidationSchema } from 'views/Validation/validationSchema';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import { t } from 'i18next';
+import url from '../../constant/url.js';
 const AddPayment = (props) => {
   console.log('In Add Payment =>', props);
   const { open, handleClose, hostelId, currentStudent } = props;
@@ -39,9 +40,9 @@ const AddPayment = (props) => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (open) {
-      console.log('URL =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/index/${hostelId}`);
+      console.log('URL =>', `${url.payments.index}${hostelId}`);
       axios
-        .get(`${REACT_APP_BACKEND_URL}/sudent_reservation/index/${hostelId}`)
+        .get(`${url.payments.index}${hostelId}`)
         .then((response) => {
           console.log('in hook =>', response);
           const studentData = response.data.result.map((student) => ({
@@ -114,7 +115,7 @@ const AddPayment = (props) => {
         if (currentStudent) {
           console.log('in if');
         } else {
-          response = await axios.post(`${REACT_APP_BACKEND_URL}/student_payment/add/${hostelId}`, formData);
+          response = await axios.post(`${url.payments.add}${hostelId}`, formData);
         }
 
         if (response.status === 201 || response.status === 200) {

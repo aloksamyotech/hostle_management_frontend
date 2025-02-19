@@ -15,6 +15,7 @@ import { weeklyFoodValidationSchema } from 'views/Validation/validationSchema';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { t } from 'i18next';
+import url from '../../constant/url.js';
 const FoodMenu = (props) => {
   const { open, handleClose, hostelId, editFoodItem } = props;
   console.log('props===>', props);
@@ -46,9 +47,9 @@ const FoodMenu = (props) => {
         let response;
         if (editFoodItem) {
           console.log('URL=>', `${REACT_APP_BACKEND_URL}/weeklyfoodmenu/edit/${editFoodItem._id}`);
-          response = await axios.put(`${REACT_APP_BACKEND_URL}/weeklyfoodmenu/edit/${editFoodItem._id}`, values);
+          response = await axios.put(`${url.weeklyFoodMenu.edit}${editFoodItem._id}`, values);
         } else {
-          response = await axios.post(`${REACT_APP_BACKEND_URL}/weeklyfoodmenu/add/${hostelId}`, values);
+          response = await axios.post(`${url.weeklyFoodMenu.add}${hostelId}`, values);
         }
 
         console.log('response==>', response);

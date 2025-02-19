@@ -31,6 +31,7 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import HomeIcon from '@mui/icons-material/Home';
 import { t } from 'i18next';
+import url from '../../constant/url.js';
 import { Link as RouterLink } from 'react-router-dom';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
@@ -91,7 +92,7 @@ const Room = () => {
 
   const fetchRoomsData = async (hostelId) => {
     try {
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/room/index/${hostelId}`, {
+      const response = await axios.get(`${url.room.index}${hostelId}`, {
         headers: {
           Authorization: `Bearer ${Cookies.get('Admin_Token')}`
         }
@@ -122,7 +123,7 @@ const Room = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`${REACT_APP_BACKEND_URL}/room/deleteData/${deleteStudentId}`, {
+      await axios.delete(`${url.room.delete}${deleteStudentId}`, {
         headers: {
           Authorization: `Bearer ${Cookies.get('Admin_Token')}`
         }

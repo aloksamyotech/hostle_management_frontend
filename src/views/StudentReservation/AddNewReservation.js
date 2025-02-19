@@ -20,6 +20,7 @@ import Cookies from 'js-cookie';
 import { State, City } from 'country-state-city';
 import { toast } from 'react-toastify';
 import { t } from 'i18next';
+import url from 'constant/url';
 
 const AddNewReservation = (props) => {
   const { open, handleClose, hostelId, editStudent } = props;
@@ -76,7 +77,7 @@ const AddNewReservation = (props) => {
     if (open && hostelId) {
       console.log('Fetching rooms URL:', `${REACT_APP_BACKEND_URL}/room/index/${hostelId}`);
       axios
-        .get(`${REACT_APP_BACKEND_URL}/room/index/${hostelId}`)
+        .get(`${url.room.index}${hostelId}`)
         .then((response) => {
           setRoomDetails(response.data.result);
           console.log('Room response:', response.data.result);
@@ -137,14 +138,14 @@ const AddNewReservation = (props) => {
         let response;
         if (editStudent) {
           console.log('URL =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/edit/${editStudent._id}`);
-          response = await axios.put(`${REACT_APP_BACKEND_URL}/sudent_reservation/edit/${editStudent._id}`, formData, {
+          response = await axios.put(`${url.studentReservation.edit}${editStudent._id}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
           });
         } else {
           console.log('URL =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/add/${hostelId}`);
-          response = await axios.post(`${REACT_APP_BACKEND_URL}/sudent_reservation/add/${hostelId}`, formData, {
+          response = await axios.post(`${url.studentReservation.add}${hostelId}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
@@ -432,7 +433,7 @@ const AddNewReservation = (props) => {
                   <MenuItem value="">Select Room Number</MenuItem>
                   {roomList.map((room) => (
                     <MenuItem key={room} value={room}>
-                      {t('room')}
+                      {room}
                     </MenuItem>
                   ))}
                 </Select>

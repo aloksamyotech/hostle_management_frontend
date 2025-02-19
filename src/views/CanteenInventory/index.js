@@ -32,6 +32,7 @@ import { styled } from '@mui/material/styles';
 import * as XLSX from 'xlsx';
 import HomeIcon from '@mui/icons-material/Home';
 import { t } from 'i18next';
+import url from '../../constant/url.js';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -90,7 +91,7 @@ const CanteenInventory = () => {
   const fetchInventory = async (hostelId) => {
     try {
       console.log('URL=>', `${REACT_APP_BACKEND_URL}/canteen_inventory/index/${hostelId}`);
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/canteen_inventory/index/${hostelId}`);
+      const response = await axios.get(`${url.canteenInventory.index}${hostelId}`);
       console.log('response fetch ===> ', response);
       setAllInventory(response.data.result);
       setTotalCount(response.data.totalRecodes);
@@ -122,7 +123,7 @@ const CanteenInventory = () => {
   const handleConfirmDelete = async () => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/canteen_inventory/delete/${deleteInventoryId}`);
-      let response = await axios.delete(`${REACT_APP_BACKEND_URL}/canteen_inventory/delete/${deleteInventoryId}`);
+      let response = await axios.delete(`${url.canteenInventory.delete}${deleteInventoryId}`);
       console.log('delete =====> response =====>', response);
 
       setOpenDeleteDialog(false);
@@ -157,7 +158,7 @@ const CanteenInventory = () => {
       console.log('jsonData ====>', jsonData);
 
       try {
-        const response = await axios.post(`${REACT_APP_BACKEND_URL}/canteen_inventory/importFile/${hostelId}`, jsonData);
+        const response = await axios.post(`${url.canteenInventory.importFile}${hostelId}`, jsonData);
         console.log('yha hai response ==>', response);
         if (response.status === 200) {
           fetchInventory(hostelId);
@@ -285,9 +286,9 @@ const CanteenInventory = () => {
       {/*-------------------- Dialog for Delete ----------------- */}
 
       <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
-        <DialogTitle variant="h4">Delete Administrator</DialogTitle>
+        <DialogTitle variant="h4">{t('Delete Administrator')}</DialogTitle>
         <DialogContent>
-          <Typography variant="body2">Are you sure you want to delete this Product?</Typography>
+          <Typography variant="body2">{t('Are you sure you want to delete this Product')}?</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDeleteDialog} variant="contained" color="primary">
@@ -302,7 +303,7 @@ const CanteenInventory = () => {
       {/* -------------------- for import button ------------------ */}
 
       <Dialog open={openImportModal} onClose={handleCloseImportModal} sx={{ minWidth: '500px', padding: '20px', borderRadius: '10px' }}>
-        <DialogTitle>Import Items File Form Here</DialogTitle>
+        <DialogTitle>{t('Import Items File Form Here')}</DialogTitle>
         <DialogContent>
           <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
             <Button variant="contained" component="label">
