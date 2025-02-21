@@ -30,7 +30,8 @@ import { productPurchesValidationSchema } from 'views/Validation/validationSchem
 import { useNavigate } from 'react-router';
 import AddNewReservation from './AddNewReservation';
 import url from 'constant/url';
-
+import { deleteApi } from 'constant/api';
+import { t } from 'i18next';
 const StudentList = (props) => {
   const { studentData, totalCount, fetchReserveStudentData, hostelId } = props;
   console.log('props=====>', props);
@@ -98,7 +99,7 @@ const StudentList = (props) => {
   const handleConfirmDelete = async () => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/deleteData/${deleteStudentId}`);
-      let response = await axios.delete(`${url.studentReservation.delete}${deleteStudentId}`);
+      let response = await deleteApi(`${url.studentReservation.delete}${deleteStudentId}`);
       console.log('response for delete =====>', response);
       setOpenDeleteDialog(false);
       fetchReserveStudentData(hostelid);

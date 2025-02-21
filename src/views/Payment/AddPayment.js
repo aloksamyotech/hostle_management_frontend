@@ -25,6 +25,7 @@ import moment from 'moment';
 import { toast } from 'react-toastify';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
+import { getApi, postApi } from 'constant/api.js';
 const AddPayment = (props) => {
   console.log('In Add Payment =>', props);
   const { open, handleClose, hostelId, currentStudent } = props;
@@ -41,8 +42,7 @@ const AddPayment = (props) => {
   useEffect(() => {
     if (open) {
       console.log('URL =>', `${url.payments.index}${hostelId}`);
-      axios
-        .get(`${url.payments.index}${hostelId}`)
+      getApi(`${url.payments.index}${hostelId}`)
         .then((response) => {
           console.log('in hook =>', response);
           const studentData = response.data.result.map((student) => ({
@@ -115,7 +115,7 @@ const AddPayment = (props) => {
         if (currentStudent) {
           console.log('in if');
         } else {
-          response = await axios.post(`${url.payments.add}${hostelId}`, formData);
+          response = await postApi(`${url.payments.add}${hostelId}`, formData);
         }
 
         if (response.status === 201 || response.status === 200) {

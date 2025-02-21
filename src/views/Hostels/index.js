@@ -30,6 +30,8 @@ import axios from 'axios';
 import { t } from 'i18next';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link as RouterLink } from 'react-router-dom';
+import url from 'constant/url';
+import { deleteApi, getApi } from 'constant/api';
 const Hostel = () => {
   const navigate = useNavigate();
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -50,7 +52,7 @@ const Hostel = () => {
 
   const fetchHostelData = async () => {
     try {
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/hostel/list`);
+      const response = await getApi(`${url.Hostels.list}`);
       console.log('response==>', response);
       setHostelData(response.data.result);
       setTotalCount(response.data.totalRecodes);
@@ -88,7 +90,7 @@ const Hostel = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`${REACT_APP_BACKEND_URL}/hostel/delete/${deleteHostelId}`);
+      await deleteApi(`${url.Hostels.delete}${deleteHostelId}`);
       setOpenDeleteDialog(false);
       fetchHostelData();
     } catch (error) {

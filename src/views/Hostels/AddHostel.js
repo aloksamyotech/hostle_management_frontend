@@ -24,6 +24,9 @@ import Cookies from 'js-cookie';
 import { ToastContainer, toast } from 'react-toastify';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { t } from 'i18next';
+import url from 'constant/url';
+import { postApi, updateApi } from 'constant/api';
+
 const AddHostel = (props) => {
   const { open, handleClose, editHostelData } = props;
 
@@ -71,13 +74,13 @@ const AddHostel = (props) => {
       try {
         let response;
         if (editHostelData) {
-          response = await axios.put(`${REACT_APP_BACKEND_URL}/hostel/edit/${editHostelData._id}`, formData, {
+          response = await updateApi(`${url.Hostels.edit}${editHostelData._id}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
           });
         } else {
-          response = await axios.post(`${REACT_APP_BACKEND_URL}/hostel/addnew`, formData, {
+          response = await postApi(`${url.Hostels.add}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }

@@ -18,6 +18,7 @@ import moment from 'moment';
 import { toast } from 'react-toastify';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
+import { getApi, postApi, updateApi } from 'constant/api.js';
 const PurchaseInventory = (props) => {
   const { open, handleClose, hostelId, editPurchase } = props;
   console.log('props==>', props);
@@ -42,8 +43,7 @@ const PurchaseInventory = (props) => {
   //Get All Product Which Adeed
   useEffect(() => {
     if (open) {
-      axios
-        .get(`${REACT_APP_BACKEND_URL}/canteen_inventory/index/${hostelId}`)
+      getApi(`${url.purchaseInventory.purchaseitem}${hostelId}`)
         .then((response) => {
           console.log('response for Product ==>', response);
 
@@ -74,9 +74,9 @@ const PurchaseInventory = (props) => {
       try {
         let response;
         if (editPurchase) {
-          response = await axios.put(`${url.purchaseInventory.edit}${editPurchase._id}`, values);
+          response = await updateApi(`${url.purchaseInventory.edit}${editPurchase._id}`, values);
         } else {
-          response = await axios.post(`${url.purchaseInventory.add}${hostelId}`, values);
+          response = await postApi(`${url.purchaseInventory.add}${hostelId}`, values);
         }
         console.log('response==>', response);
 
@@ -89,8 +89,9 @@ const PurchaseInventory = (props) => {
         }
       } catch (error) {
         console.log('Found Error', error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
   });
 

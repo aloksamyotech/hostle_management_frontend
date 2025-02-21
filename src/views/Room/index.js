@@ -33,6 +33,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
 import { Link as RouterLink } from 'react-router-dom';
+import { deleteApi } from 'constant/api';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -123,7 +124,7 @@ const Room = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`${url.room.delete}${deleteStudentId}`, {
+      await deleteApi(`${url.room.delete}${deleteStudentId}`, {
         headers: {
           Authorization: `Bearer ${Cookies.get('Admin_Token')}`
         }

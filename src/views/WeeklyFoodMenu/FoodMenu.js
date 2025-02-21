@@ -16,12 +16,14 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
+import { postApi, updateApi } from 'constant/api.js';
+import { useState } from 'react';
 const FoodMenu = (props) => {
   const { open, handleClose, hostelId, editFoodItem } = props;
   console.log('props===>', props);
 
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-
+  const [loading, isLoading] = useState(false);
   //When Found editRoom Data
   useEffect(() => {
     if (open && editFoodItem) {
@@ -41,15 +43,17 @@ const FoodMenu = (props) => {
     },
     validationSchema: weeklyFoodValidationSchema,
     onSubmit: async (values) => {
+      if (loading) return;
+      isLoading(true);
       console.log('Form is valid ====>', values);
 
       try {
         let response;
         if (editFoodItem) {
           console.log('URL=>', `${REACT_APP_BACKEND_URL}/weeklyfoodmenu/edit/${editFoodItem._id}`);
-          response = await axios.put(`${url.weeklyFoodMenu.edit}${editFoodItem._id}`, values);
+          response = await updateApi(`${url.weeklyFoodMenu.edit}${editFoodItem._id}`, values);
         } else {
-          response = await axios.post(`${url.weeklyFoodMenu.add}${hostelId}`, values);
+          response = await postApi(`${url.weeklyFoodMenu.add}${hostelId}`, values);
         }
 
         console.log('response==>', response);
@@ -62,6 +66,8 @@ const FoodMenu = (props) => {
         }
       } catch (error) {
         console.log('Found Error =>', error);
+      } finally {
+        isLoading(false);
       }
     }
   });
@@ -136,7 +142,7 @@ const FoodMenu = (props) => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={formik.handleSubmit} variant="contained" color="primary" type="submit">
+          <Button onClick={formik.handleSubmit} variant="contained" color="primary" type="submit" disabled={loading}>
             {t('Save')}
           </Button>
           <Button

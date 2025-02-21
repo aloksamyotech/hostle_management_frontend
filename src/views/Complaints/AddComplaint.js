@@ -18,6 +18,7 @@ import moment from 'moment';
 import Cookies from 'js-cookie';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
+import { getApi, postApi, updateApi } from 'constant/api.js';
 const AddComplaint = (props) => {
   const { open, handleClose, hostelId, editComplaint } = props;
   const [loading, setLoading] = useState(false);
@@ -35,8 +36,7 @@ const AddComplaint = (props) => {
   useEffect(() => {
     if (open) {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/index/${hostelId}`);
-      axios
-        .get(`${url.studentComplaint.indexx}${hostelId}`)
+      getApi(`${url.studentComplaint.indexx}${hostelId}`)
         .then((response) => {
           console.log('in hook =>', response);
           const studentData = response.data.result
@@ -124,14 +124,14 @@ const AddComplaint = (props) => {
         let response;
         if (editComplaint) {
           console.log('URL=>', `${REACT_APP_BACKEND_URL}/student_complaint/edit/${editComplaint._id}`);
-          response = await axios.put(`${url.studentComplaint.edit}${editComplaint._id}`, values, {
+          response = await updateApi(`${url.studentComplaint.edit}${editComplaint._id}`, values, {
             headers: {
               Authorization: `Bearer ${Cookies.get('Admin_Token')}`
             }
           });
         } else {
           console.log('URL=>', `${REACT_APP_BACKEND_URL}/student_complaint/add/${hostelId}`);
-          response = await axios.post(`${url.studentComplaint.add}${hostelId}`, values, {
+          response = await postApi(`${url.studentComplaint.add}${hostelId}`, values, {
             headers: {
               Authorization: `Bearer ${Cookies.get('Admin_Token')}`
             }

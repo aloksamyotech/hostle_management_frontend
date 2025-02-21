@@ -33,6 +33,7 @@ import * as XLSX from 'xlsx';
 import HomeIcon from '@mui/icons-material/Home';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
+import { deleteApi, getApi, postApi } from 'constant/api';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -91,7 +92,7 @@ const CanteenInventory = () => {
   const fetchInventory = async (hostelId) => {
     try {
       console.log('URL=>', `${REACT_APP_BACKEND_URL}/canteen_inventory/index/${hostelId}`);
-      const response = await axios.get(`${url.canteenInventory.index}${hostelId}`);
+      const response = await getApi(`${url.canteenInventory.index}${hostelId}`);
       console.log('response fetch ===> ', response);
       setAllInventory(response.data.result);
       setTotalCount(response.data.totalRecodes);
@@ -123,7 +124,7 @@ const CanteenInventory = () => {
   const handleConfirmDelete = async () => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/canteen_inventory/delete/${deleteInventoryId}`);
-      let response = await axios.delete(`${url.canteenInventory.delete}${deleteInventoryId}`);
+      let response = await deleteApi(`${url.canteenInventory.delete}${deleteInventoryId}`);
       console.log('delete =====> response =====>', response);
 
       setOpenDeleteDialog(false);
@@ -158,7 +159,7 @@ const CanteenInventory = () => {
       console.log('jsonData ====>', jsonData);
 
       try {
-        const response = await axios.post(`${url.canteenInventory.importFile}${hostelId}`, jsonData);
+        const response = await postApi(`${url.canteenInventory.importFile}${hostelId}`, jsonData);
         console.log('yha hai response ==>', response);
         if (response.status === 200) {
           fetchInventory(hostelId);

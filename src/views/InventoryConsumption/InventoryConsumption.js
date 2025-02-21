@@ -18,6 +18,7 @@ import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
+import { getApi, postApi, updateApi } from 'constant/api.js';
 const ConsumptionInventory = (props) => {
   const { open, handleClose, hostelId, editConsumeProduct } = props;
   console.log('props==>', props);
@@ -40,11 +41,8 @@ const ConsumptionInventory = (props) => {
 
   useEffect(() => {
     if (open) {
-      axios
-        .get(`${url.consumptionInventory.index}${hostelId}`)
+      getApi(`${url.purchaseInventory.index}${hostelId}`)
         .then((response) => {
-          console.log('Purchase Products ==>', response);
-
           const ProductNames = response.data.result.map((product) => product['productName']);
           console.log('==>', ProductNames);
           setAllPurchaseProducts(ProductNames);
@@ -71,12 +69,12 @@ const ConsumptionInventory = (props) => {
       try {
         let response;
         if (editConsumeProduct) {
-          response = await axios.put(`${url.consumptionInventory.edit}${editConsumeProduct._id}`, values);
+          response = await updateApi(`${url.consumptionInventory.edit}${editConsumeProduct._id}`, values);
           if (response == 200) {
             toast.success('update successfully');
           }
         } else {
-          response = await axios.post(`${url.consumptionInventory.add}${hostelId}`, values);
+          response = await postApi(`${url.consumptionInventory.add}${hostelId}`, values);
           if (response.status === 200) {
             toast.success('Consume Added sussecesfully');
           }
@@ -91,6 +89,7 @@ const ConsumptionInventory = (props) => {
         if (response.status === 201 || response.status === 200) {
           console.log('Inventory Consume Added Successfully !!');
           handleClose();
+          toast.success('Consume Added sussecesfully');
         } else {
           console.error('Failed to save data');
         }

@@ -16,12 +16,15 @@ import { useEffect, useState } from 'react';
 import moment from 'moment';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
+import { postApi, updateApi } from 'constant/api.js';
+import { toast } from 'react-toastify';
 const AllExpenses = (props) => {
   const { open, handleClose, hostelId, editExpense } = props;
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   const [existingImgFile, setExistingImgFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const formik = useFormik({
     initialValues: {
       expenseTitle: '',
@@ -33,6 +36,7 @@ const AllExpenses = (props) => {
     onSubmit: async (values) => {
       setLoading(true);
       console.log('Form is valid ====>', values);
+      setLoading(true);
 
       const formData = new FormData();
       Object.keys(values).forEach((key) => {
@@ -46,13 +50,13 @@ const AllExpenses = (props) => {
       try {
         let response;
         if (editExpense) {
-          response = await axios.put(`${url.expenditure.edit}${editExpense._id}`, formData, {
+          response = await updateApi(`${url.expenditure.edit}${editExpense._id}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
           });
         } else {
-          response = await axios.post(`${url.expenditure.add}${hostelId}`, formData, {
+          response = await postApi(`${url.expenditure.add}${hostelId}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
@@ -63,6 +67,7 @@ const AllExpenses = (props) => {
           console.log("Expenditure's Add Successfully !!");
 
           handleClose();
+          toast.success('Expenditure succesfully done');
         } else {
           console.error('Failed to save data');
         }

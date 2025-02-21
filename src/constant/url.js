@@ -1,4 +1,5 @@
 import { Upload } from '@mui/icons-material';
+import SuperAdminDashboard from 'views/SuperAdminDashboard/Default';
 
 const base = 'http://localhost:4000';
 const baseDashboard = '/dashboard';
@@ -11,7 +12,7 @@ export const url = {
     allComplaints: `${base}/student_complaint/allComplaints/`,
     tstudentReservation: `${base}/sudent_reservation/`,
     room: `${baseDashboard}/room`,
-    studentReservationPage: `${baseDashboard}/student_reservation`
+    studentReservationPage: `${baseDashboard}/student_reservation/`
   },
   canteenInventory: {
     index: `${base}/canteen_inventory/index/`,
@@ -25,7 +26,8 @@ export const url = {
     index: `${base}/canteen_inventory_purches/index/`,
     add: `${base}/canteen_inventory_purches/add/`,
     edit: `${base}/canteen_inventory_purches/edit/`,
-    delete: `${base}/canteen_inventory_purches/delete/`
+    delete: `${base}/canteen_inventory_purches/delete/`,
+    purchaseitem: `${base}/canteen_inventory/index/`
   },
 
   consumptionInventory: {
@@ -104,6 +106,24 @@ export const url = {
     add: `${base}/weeklyfoodmenu/add/`,
     edit: `${base}/weeklyfoodmenu/edit/`,
     delete: `${base}/weeklyfoodmenu/delete/`
+  },
+
+  SuperAdminDashboard: {
+    hostelList: `${base}/hostel/list`,
+    adminList: `${base}/administrator/list`,
+    studentCount: `${base}/student/allStudentCount`,
+    allRooms: `${base}/room/alRooms`,
+    calculateBeds: `${base}/room/calculate-beds`
+  },
+  Hostels: {
+    edit: `${base}/hostel/edit/`,
+    add: `${base}/hostel/addnew`,
+    delete: `${base}/hostel/delete/`,
+    list: `${base}/hostel/list`,
+    view: `${base}/hostel/view/`
+  },
+  ragistraion: {
+    login: `${base}/administrator/login`
   }
 };
 

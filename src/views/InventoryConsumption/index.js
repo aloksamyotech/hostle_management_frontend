@@ -32,6 +32,7 @@ import { styled } from '@mui/material/styles';
 import HomeIcon from '@mui/icons-material/Home';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
+import { deleteApi, getApi } from 'constant/api';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -88,8 +89,8 @@ const InventoryConsumption = () => {
 
   const fetchConsumptionProducts = async (hostelId) => {
     try {
-      const response = await axios.get(`${url.consumptionInventory.index}${hostelId}`);
-      console.log('response==>', response);
+      const response = await getApi(`${url.consumptionInventory.index}${hostelId}`);
+      console.log('response==rohit>', response);
       setConsumeProducts(response.data.result);
       setTotalCount(response.data.totalRecodes);
     } catch (error) {
@@ -97,7 +98,6 @@ const InventoryConsumption = () => {
     }
   };
 
-  //Handle Edit Action Here
   const handleEdit = (id) => {
     console.log(`Edit clicked for ID: ${id}`);
     setOpenAdd(true);
@@ -120,7 +120,7 @@ const InventoryConsumption = () => {
   const handleConfirmDelete = async () => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/canteen_inventory_consume/delete/${deleteConsumeProduct}`);
-      let response = await axios.delete(`${url.consumptionInventory.delete}${deleteConsumeProduct}`);
+      let response = await deleteApi(`${url.consumptionInventory.delete}${deleteConsumeProduct}`);
       console.log('delete =====> response =====>', response);
 
       setOpenDeleteDialog(false);

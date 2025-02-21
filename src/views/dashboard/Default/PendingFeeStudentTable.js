@@ -27,6 +27,8 @@ import axios from 'axios';
 import TableStyle from 'ui-component/TableStyle';
 import { styled } from '@mui/material/styles';
 import { t } from 'i18next';
+import url from '../../../constant/url.js';
+import { getApi } from '../../../constant/api.js';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -65,7 +67,9 @@ const PendingFeeStudent = () => {
   // Fetch All Payment Data Here
   const fetchPaymentData = async (hostelId) => {
     try {
-      const response = await axios.get(`${REACT_APP_BACKEND_URL}/student_payment/list/${hostelId}`);
+      const response = await getApi(`${url.payments.list}${hostelId}`);
+      console.log('response of api =======rohit', response);
+
       setPaymentData(response.data.result);
     } catch (error) {
       console.error('Error fetching payment data:', error);

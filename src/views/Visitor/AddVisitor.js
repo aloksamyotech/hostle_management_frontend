@@ -15,6 +15,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { visitorValidationSchema } from 'views/Validation/validationSchema';
 import { t } from 'i18next';
 import { toast } from 'react-toastify';
+import url from 'constant/url';
+import { getApi, postApi } from 'constant/api';
 
 const AddVisotor = (props) => {
   const { open, handleClose, hostelId } = props;
@@ -28,12 +30,12 @@ const AddVisotor = (props) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedStudentName, setSelectedStudentName] = useState('');
   const [selectedStudentPhoneNo, setSelectedStudentPhoneNo] = useState('');
+  const [loading, isLoading] = useState(false);
 
   useEffect(() => {
     if (open) {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/index/${hostelId}`);
-      axios
-        .get(`${REACT_APP_BACKEND_URL}/sudent_reservation/index/${hostelId}`)
+      getApi(`${url.dashboard.studentReservation}${hostelId}`)
         .then((response) => {
           console.log('in hook =>', response);
           const studentData = response.data.result
@@ -101,12 +103,15 @@ const AddVisotor = (props) => {
     },
     validationSchema: visitorValidationSchema,
     onSubmit: async (values) => {
+      if (loading) return;
+      isLoading(true);
+
       // Handle form submission here
       console.log('Form values:==>', values);
 
       try {
         let response;
-        response = await axios.post(`${REACT_APP_BACKEND_URL}/visitor/add/${hostelId}`, values);
+        response = await postApi(`${url.visitor.add}${hostelId}`, values);
         console.log('response ====rohitt>', response);
         if (response.status === 201) {
           toast.success('visits successfuly');
@@ -114,6 +119,8 @@ const AddVisotor = (props) => {
         }
       } catch (error) {
         console.log('Found Error =>', error);
+      } finally {
+        isLoading(false);
       }
     }
   });
@@ -226,7 +233,7 @@ const AddVisotor = (props) => {
             {' '}
             {t('Save')}{' '}
           </Button>
-          <Button onClick={handleClose} variant="outlined" color="error">
+          <Button onClick={handleClose} variant="outlined" color="error" disabled={loading}>
             {' '}
             {t('Cancel')}{' '}
           </Button>

@@ -23,6 +23,7 @@ import { t } from 'i18next';
 import PendingFeeStudent from './PendingFeeStudentTable';
 import { useNavigate } from 'react-router';
 import url from '../../../constant/url.js';
+import { getApi } from 'constant/api';
 // ==============================|| SUBADMIN DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = () => {
@@ -46,12 +47,12 @@ const Dashboard = () => {
   async function fetchDashboardData(hostelId) {
     try {
       console.log('URL=>', `${REACT_APP_BACKEND_URL}/sudent_reservation/index/${hostelId}`);
-      const resForStudent = await axios.get(`${url.dashboard.studentReservation}${hostelId}`);
-      console.log(' response for resForStudent ======== rohit        ===>', resForStudent);
+      const resForStudent = await getApi(`${url.dashboard.studentReservation}${hostelId}`);
+
       setStudentCount(resForStudent.data.totalRecodes);
 
       console.log('URL=>', `${REACT_APP_BACKEND_URL}/room/index/${hostelId}`);
-      const resForTotalRooms = await axios.get(`${url.dashboard.totalRooms}${hostelId}`);
+      const resForTotalRooms = await getApi(`${url.dashboard.totalRooms}${hostelId}`);
       console.log('response for resForTotalRooms -------========>', resForTotalRooms);
       setTotalRooms(resForTotalRooms.data.totalRecodes);
       setAvaRoomsCount(resForTotalRooms.data.availableRoomCount);
@@ -59,7 +60,7 @@ const Dashboard = () => {
 
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/expense/allexpenses/${hostelId}`);
 
-      const responseForExpense = await axios.get(`${url.dashboard.allExpenses}${hostelId}`);
+      const responseForExpense = await getApi(`${url.dashboard.allExpenses}${hostelId}`);
       console.log('response For Expense =======>', responseForExpense);
 
       const expensesData = responseForExpense.data.monthlyExpenses;
@@ -75,7 +76,7 @@ const Dashboard = () => {
 
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/student_complaint/allComplaints/${hostelId}`);
 
-      const resForAllComplaints = await axios.get(`${url.dashboard.allComplaints}${hostelId}`);
+      const resForAllComplaints = await getApi(`${url.dashboard.allComplaints}${hostelId}`);
       console.log('response for resForAllComplaints =======>', resForAllComplaints);
 
       const complaintData = resForAllComplaints.data.totalComplaints;

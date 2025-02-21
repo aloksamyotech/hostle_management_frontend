@@ -51,6 +51,8 @@ import { Avatar } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import Coverr from './cover.jpg';
 import url from '../../constant/url.js';
+import { t } from 'i18next';
+import { getApi } from 'constant/api';
 const ProfileDetails = () => {
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   const [profileData, setProfileData] = useState(null);
@@ -90,7 +92,7 @@ const ProfileDetails = () => {
   const fetchStudentDetails = async () => {
     try {
       console.log('Making API With This URL==>', `${REACT_APP_BACKEND_URL}/sudent_reservation/view/${id}`);
-      const response = await axios.get(`${url.studentReservation.view}${id}`);
+      const response = await getApi(`${url.studentReservation.view}${id}`);
       console.log('API fetch StudentDetails response=>', response);
       setProfileData(response.data.result);
 
@@ -104,7 +106,7 @@ const ProfileDetails = () => {
   const fetchStudentPaymentData = async () => {
     try {
       console.log('Making API With This URL==>', `${REACT_APP_BACKEND_URL}/student_payment/paymenthistory/${id}`);
-      const response = await axios.get(`${url.studentReservation.paymenthistory}${id}`);
+      const response = await getApi(`${url.studentReservation.paymenthistory}${id}`);
       console.log('API Payment Data response=>', response);
       setPaymentData(response.data.result);
       setTotalCount(response.data.totalRecodes);
@@ -116,7 +118,7 @@ const ProfileDetails = () => {
   const fetchVisitorData = async () => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/visitor/list/${id}`);
-      const response = await axios.get(`${url.studentReservation.visitorlist}${id}`);
+      const response = await getApi(`${url.studentReservation.visitorlist}${id}`);
       console.log(' fetchVisitorData response===>', response);
       setVisitorData(response.data.result);
       setTotalVisitorCount(response.data.totalRecodes);
@@ -144,10 +146,10 @@ const ProfileDetails = () => {
       <HomeIcon color="secondary" />
     </Link>,
     <Link underline="hover" key="2" color="inherit">
-      Dashboard
+      {t('Dashboard')}
     </Link>,
     <Typography key="3" sx={{ color: 'text.primary' }}>
-      List
+      {t('List')}
     </Typography>
   ];
 
@@ -196,9 +198,9 @@ const ProfileDetails = () => {
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: '0px' }}>
             <Tabs value={activeTab} onChange={handleTabChange} aria-label="basic tabs example">
-              <Tab label="Profile Details" />
-              <Tab label="Payment History" />
-              <Tab label="Visitor History" />
+              <Tab label={t('Profile Details')} />
+              <Tab label={t('Payment History')} />
+              <Tab label={t('Visitor History')} />
             </Tabs>
           </Box>
         </Box>
@@ -246,20 +248,24 @@ const ProfileDetails = () => {
                         }}
                       >
                         {[
-                          { label: 'Student Name', value: profileData.studentName, icon: <PersonIcon /> },
-                          { label: 'Student PhoneNo', value: profileData.studentPhoneNo, icon: <PhoneIcon /> },
-                          { label: 'Email Id', value: profileData.email, icon: <EmailIcon /> },
-                          { label: 'Date Of Birth', value: moment(profileData.dateOfBirth).format('DD-MM-YYYY'), icon: <CakeIcon /> },
-                          { label: 'Gender', value: profileData.gender, icon: <TransgenderIcon /> },
-                          { label: 'Fathers Name', value: profileData.fathersName, icon: <FamilyRestroomIcon /> },
-                          { label: 'Fathers PhoneNo', value: profileData.fathersPhoneNo, icon: <PhoneIcon /> },
+                          { label: t('Student Name'), value: profileData.studentName, icon: <PersonIcon /> },
+                          { label: t('Student PhoneNo'), value: profileData.studentPhoneNo, icon: <PhoneIcon /> },
+                          { label: t('Email Id'), value: profileData.email, icon: <EmailIcon /> },
+                          { label: t('Date Of Birth'), value: moment(profileData.dateOfBirth).format('DD-MM-YYYY'), icon: <CakeIcon /> },
+                          { label: t('Gender'), value: profileData.gender, icon: <TransgenderIcon /> },
+                          { label: t('Fathers Name'), value: profileData.fathersName, icon: <FamilyRestroomIcon /> },
+                          { label: t('Fathers PhoneNo'), value: profileData.fathersPhoneNo, icon: <PhoneIcon /> },
                           {
-                            label: 'Address',
+                            label: t('Address'),
                             value: profileData.address + '   ' + profileData.city + ' ' + profileData.state,
                             icon: <HomeIcon />
                           },
-                          { label: 'Start Date', value: moment(profileData.startDate).format('DD-MM-YYYY'), icon: <CalendarTodayIcon /> },
-                          { label: 'End Date', value: moment(profileData.endDate).format('DD-MM-YYYY'), icon: <CalendarTodayIcon /> }
+                          {
+                            label: t('Start Date'),
+                            value: moment(profileData.startDate).format('DD-MM-YYYY'),
+                            icon: <CalendarTodayIcon />
+                          },
+                          { label: t('End Date'), value: moment(profileData.endDate).format('DD-MM-YYYY'), icon: <CalendarTodayIcon /> }
                         ].map((info, index) => (
                           <Box key={index} mb={2}>
                             <Typography
@@ -288,15 +294,15 @@ const ProfileDetails = () => {
                         }}
                       >
                         {[
-                          { label: 'Room Number', value: profileData.roomNumber, icon: <MeetingRoomIcon /> },
-                          { label: 'Library Facility', value: profileData.isLibrary, icon: <LibraryBooksIcon /> },
-                          { label: 'Food Facility', value: profileData.isFood, icon: <RestaurantIcon /> },
-                          { label: 'Library Amount', value: profileData.libraryAmount, icon: <AttachMoneyIcon /> },
-                          { label: 'Food Amount', value: profileData.foodAmount, icon: <AttachMoneyIcon /> },
-                          { label: 'Hostel Monthly Rent:', value: profileData.hostelRent, icon: <AttachMoneyIcon /> },
-                          { label: 'Advance Payment', value: profileData.advancePayment, icon: <CreditCardIcon /> },
-                          { label: 'Monthly Total Rent', value: profileData.MonthlyTotalAmmount, icon: <AttachMoneyIcon /> },
-                          { label: 'Total Rent till EndMonth', value: profileData.totalAmount, icon: <AttachMoneyIcon /> }
+                          { label: t('Room Number'), value: profileData.roomNumber, icon: <MeetingRoomIcon /> },
+                          { label: t('Library Facility'), value: profileData.isLibrary, icon: <LibraryBooksIcon /> },
+                          { label: t('Food Facility'), value: profileData.isFood, icon: <RestaurantIcon /> },
+                          { label: t('Library Amount'), value: profileData.libraryAmount, icon: <AttachMoneyIcon /> },
+                          { label: t('Food Amount'), value: profileData.foodAmount, icon: <AttachMoneyIcon /> },
+                          { label: t('Hostel Monthly Rent'), value: profileData.hostelRent, icon: <AttachMoneyIcon /> },
+                          { label: t('Advance Payment'), value: profileData.advancePayment, icon: <CreditCardIcon /> },
+                          { label: t('Monthly Total Rent'), value: profileData.MonthlyTotalAmmount, icon: <AttachMoneyIcon /> },
+                          { label: t('Total Rent till EndMonth'), value: profileData.totalAmount, icon: <AttachMoneyIcon /> }
                         ].map((info, index) => (
                           <Box key={index} mb={2}>
                             <Typography
@@ -384,15 +390,15 @@ const ProfileDetails = () => {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableCell>Month</TableCell>
-                          <TableCell>Date</TableCell>
-                          <TableCell>Monthly Paid Amount</TableCell>
-                          <TableCell>Monthly Pending Amount</TableCell>
-                          <TableCell>Total Amount</TableCell>
-                          <TableCell>Total Pending Amount</TableCell>
-                          <TableCell>Payment Method</TableCell>
-                          <TableCell>Attachment</TableCell>
-                          <TableCell>Status</TableCell>
+                          <TableCell>{t('Month')}</TableCell>
+                          <TableCell>{t('Date')}</TableCell>
+                          <TableCell>{t('Monthly Paid Amount')}</TableCell>
+                          <TableCell>{t('Monthly Pending Amount')}</TableCell>
+                          <TableCell>{t('Total Amount')}</TableCell>
+                          <TableCell>{t('Total Pending Amount')}</TableCell>
+                          <TableCell>{t('Payment Method')}</TableCell>
+                          <TableCell>{t('Attachment')}</TableCell>
+                          <TableCell>{t('Status')}</TableCell>
                         </TableRow>
                       </TableHead>
 
@@ -429,11 +435,11 @@ const ProfileDetails = () => {
                               <Stack direction="row" alignItems="center">
                                 {row.monthlyPending > 0 ? (
                                   <Typography variant="body2" color="red">
-                                    Pending
+                                    {t('Pending')}
                                   </Typography>
                                 ) : (
                                   <Typography variant="body2" color="green">
-                                    Complete
+                                    {t('Complete')}
                                   </Typography>
                                 )}
                               </Stack>
@@ -467,9 +473,9 @@ const ProfileDetails = () => {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableCell>Name</TableCell>
-                          <TableCell>Phone No.</TableCell>
-                          <TableCell>Date & Time</TableCell>
+                          <TableCell>{t('Name')}</TableCell>
+                          <TableCell>{t('Phone No.')}</TableCell>
+                          <TableCell>{t('Date & Time')}</TableCell>
                         </TableRow>
                       </TableHead>
 
@@ -484,15 +490,6 @@ const ProfileDetails = () => {
                       </TableBody>
                     </Table>
                   </TableContainer>
-
-                  {/* <TablePagination
-                  component="div"
-                  count={totalCount}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  rowsPerPage={rowsPerPage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                /> */}
                 </Card>
               </Box>
             </TableStyle>

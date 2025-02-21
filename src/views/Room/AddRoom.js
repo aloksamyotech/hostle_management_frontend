@@ -23,6 +23,7 @@ import { ArrowRightAlt } from '@mui/icons-material';
 import { useState } from 'react';
 import { t } from 'i18next';
 import urll from '../../constant/url.js';
+import { getApi, postApi, updateApi } from 'constant/api.js';
 const roomValidationSchema = yup.object().shape({
   roomNumber: yup
     .string()
@@ -58,16 +59,15 @@ const AddRoom = ({ open, handleClose, hostelId, editRoom }) => {
 
       try {
         const url = editRoom ? `${urll.room.edit}${editRoom._id}` : `${urll.room.add}${hostelId}`;
-
-        const response = await axios({
-          method: editRoom ? 'put' : 'post',
-          url,
-          data: formData,
-          headers: {
-            Authorization: `Bearer ${Cookies.get('Admin_Token')}`,
-            'Content-Type': 'multipart/form-data'
-          }
-        });
+        const response = editRoom
+          ? await updateApi(url, formData, {
+              Authorization: `Bearer ${Cookies.get('Admin_Token')}`,
+              'Content-Type': 'multipart/form-data'
+            })
+          : await postApi(url, formData, {
+              Authorization: `Bearer ${Cookies.get('Admin_Token')}`,
+              'Content-Type': 'multipart/form-data'
+            });
 
         if (response.status === 201 || response.status === 200) {
           toast.success('Room added successfully!');
@@ -79,14 +79,15 @@ const AddRoom = ({ open, handleClose, hostelId, editRoom }) => {
         } else {
           toast.error('An error occurred while adding the room.');
         }
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
   });
 
   const Fetchtype = async () => {
     try {
-      const response = await axios.get(`${urll.room.gettype}${hostelId}`);
+      const response = await getApi(`${urll.room.gettype}${hostelId}`);
       if (response) {
         setType(response?.data);
         console.log('response data is ========================', response);

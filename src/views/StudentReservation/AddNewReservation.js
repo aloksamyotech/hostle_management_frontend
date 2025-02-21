@@ -21,6 +21,7 @@ import { State, City } from 'country-state-city';
 import { toast } from 'react-toastify';
 import { t } from 'i18next';
 import url from 'constant/url';
+import { getApi, postApi, updateApi } from 'constant/api';
 
 const AddNewReservation = (props) => {
   const { open, handleClose, hostelId, editStudent } = props;
@@ -76,8 +77,7 @@ const AddNewReservation = (props) => {
   useEffect(() => {
     if (open && hostelId) {
       console.log('Fetching rooms URL:', `${REACT_APP_BACKEND_URL}/room/index/${hostelId}`);
-      axios
-        .get(`${url.room.index}${hostelId}`)
+      getApi(`${url.room.index}${hostelId}`)
         .then((response) => {
           setRoomDetails(response.data.result);
           console.log('Room response:', response.data.result);
@@ -138,14 +138,14 @@ const AddNewReservation = (props) => {
         let response;
         if (editStudent) {
           console.log('URL =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/edit/${editStudent._id}`);
-          response = await axios.put(`${url.studentReservation.edit}${editStudent._id}`, formData, {
+          response = await updateApi(`${url.studentReservation.edit}${editStudent._id}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
           });
         } else {
           console.log('URL =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/add/${hostelId}`);
-          response = await axios.post(`${url.studentReservation.add}${hostelId}`, formData, {
+          response = await postApi(`${url.studentReservation.add}${hostelId}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
@@ -192,7 +192,6 @@ const AddNewReservation = (props) => {
     }
   }, [selectedState]);
 
-  //For Reset Feilds When Add New
   useEffect(() => {
     if (open && !editStudent) {
       formik.resetForm();
@@ -207,11 +206,9 @@ const AddNewReservation = (props) => {
     const selectedRoom = event.target.value;
     formik.setFieldValue('roomNumber', selectedRoom);
 
-    // Find the room's available bed IDs
     const roomData = roomDetails.find((room) => room.roomNumber === selectedRoom);
-    setAvailableBeds(roomData?.bedIDs || []);
+    setAvailableBeds(roomData?.bedIDs.filter((bed) => bed.active) || []);
 
-    // Reset Bed ID when room changes
     formik.setFieldValue('bedId', '');
   };
 
@@ -454,12 +451,13 @@ const AddNewReservation = (props) => {
                     error={formik.touched.bedId && !!formik.errors.bedId}
                   >
                     <MenuItem value="">Select Bed ID</MenuItem>
-                    {availableBeds.map((bedId) => (
-                      <MenuItem key={bedId} value={bedId}>
-                        {bedId}
+                    {availableBeds.map((bed) => (
+                      <MenuItem key={bed.bedId} value={bed.bedId}>
+                        {bed.bedId}
                       </MenuItem>
                     ))}
                   </Select>
+
                   {formik.touched.bedId && formik.errors.bedId && <FormHelperText error>{formik.errors.bedId}</FormHelperText>}
                 </Grid>
               )}

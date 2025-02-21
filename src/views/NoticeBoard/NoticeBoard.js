@@ -17,6 +17,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import moment from 'moment';
 import { t } from 'i18next';
+import { postApi, updateApi } from 'constant/api.js';
 const Notices = (props) => {
   const { open, handleClose, hostelId, editNotice } = props;
   console.log('props==>', props);
@@ -43,17 +44,19 @@ const Notices = (props) => {
     },
     validationSchema: noticeValidationSchema,
     onSubmit: async (values) => {
-      if (Loading) console.log('Form is valid ====>', values);
+      if (Loading) return;
+      console.log('Form is valid ====>', values);
+      setLoading(true);
 
       try {
         console.log('in try...');
         let response;
         if (editNotice) {
           console.log('URL=>', `${REACT_APP_BACKEND_URL}/notice_board/edit/${editNotice._id}`);
-          response = await axios.put(`${url.notice.edit}${editNotice._id}`, values);
+          response = await updateApi(`${url.notice.edit}${editNotice._id}`, values);
         } else {
           console.log('URL=>', `${REACT_APP_BACKEND_URL}/notice_board/add/${hostelId}`);
-          response = await axios.post(`${url.notice.add}${hostelId}`, values);
+          response = await postApi(`${url.notice.add}${hostelId}`, values);
         }
 
         console.log('response==>', response);
@@ -66,6 +69,8 @@ const Notices = (props) => {
         }
       } catch (error) {
         console.log('Found Error =>', error);
+      } finally {
+        setLoading(false);
       }
     }
   });
@@ -145,7 +150,7 @@ const Notices = (props) => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={formik.handleSubmit} variant="contained" color="primary" type="submit">
+          <Button onClick={formik.handleSubmit} variant="contained" color="primary" type="submit" disabled={Loading}>
             {t('Save')}
           </Button>
           <Button

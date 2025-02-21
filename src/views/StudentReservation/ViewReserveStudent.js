@@ -22,6 +22,7 @@ import { useState } from 'react';
 import moment from 'moment';
 import Cookies from 'js-cookie';
 import url from '../../constant/url.js';
+import { getApi } from 'constant/api.js';
 const ViewReserveStudent = () => {
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -40,7 +41,7 @@ const ViewReserveStudent = () => {
     const fetchReserveStudentDetails = async () => {
       try {
         console.log('Making API With This URL==>', `${REACT_APP_BACKEND_URL}/sudent_reservation/view/${id}`);
-        const response = await axios.get(`${url.studentReservation.view}${id}`, {
+        const response = await getApi(`${url.studentReservation.view}${id}`, {
           headers: {
             Authorization: `Bearer ${Cookies.get('Admin_Token')}`
           }

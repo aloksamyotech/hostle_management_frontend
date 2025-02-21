@@ -34,6 +34,7 @@ import { styled } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
+import { deleteApi, getApi } from 'constant/api';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -88,7 +89,7 @@ const Expenditure = () => {
   const fetchExpenses = async (hostelId) => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/expense/index/${hostelId}`);
-      const response = await axios.get(`${url.expenditure.index}${hostelId}`, {
+      const response = await getApi(`${url.expenditure.index}${hostelId}`, {
         params: {
           startDate: startDate || undefined,
           endDate: endDate || undefined
@@ -126,7 +127,7 @@ const Expenditure = () => {
   const handleConfirmDelete = async () => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/expense/delete/${deleteId}`);
-      let response = await axios.delete(`${url.expenditure.delete}${deleteId}`);
+      let response = await deleteApi(`${url.expenditure.delete}${deleteId}`);
       console.log('delete  response =====>', response);
 
       setOpenDeleteDialog(false);

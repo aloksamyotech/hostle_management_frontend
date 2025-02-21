@@ -15,8 +15,11 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
+import { useState } from 'react';
+import { postApi, updateApi } from 'constant/api.js';
 const AddInventory = (props) => {
   const { open, handleClose, hostelId, editInventory } = props;
+  const [loading, setLoading] = useState(false);
   console.log('props==>', props);
 
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -39,16 +42,17 @@ const AddInventory = (props) => {
     validationSchema: productValidationSchema,
     onSubmit: async (values) => {
       console.log('Form is valid ====>', values);
+      setLoading(true);
 
       try {
         console.log('in try...');
         let response;
         if (editInventory) {
           console.log('URL=>', `${REACT_APP_BACKEND_URL}/canteen_inventory/edit/${editInventory._id}`);
-          response = await axios.put(`${url.canteenInventory.edit}${editInventory._id}`, values);
+          response = await updateApi(`${url.canteenInventory.edit}${editInventory._id}`, values);
         } else {
           console.log('URL=>', `${REACT_APP_BACKEND_URL}/canteen_inventory/add/${hostelId}`);
-          response = await axios.post(`${url.canteenInventory.add}${hostelId}`, values);
+          response = await postApi(`${url.canteenInventory.add}${hostelId}`, values);
         }
         console.log('response==>', response);
 
@@ -60,6 +64,8 @@ const AddInventory = (props) => {
         }
       } catch (error) {
         console.log('Found Error =>', error);
+      } finally {
+        setLoading(false);
       }
     }
   });
@@ -137,8 +143,14 @@ const AddInventory = (props) => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={formik.handleSubmit} variant="contained" color="primary" type="submit">
-            {t('Save')}
+          <Button
+            onClick={formik.handleSubmit}
+            variant="contained"
+            color="primary"
+            type="submit"
+            disabled={loading} // Button disable when loading is true
+          >
+            {loading ? 'Saving...' : t('Save')}
           </Button>
           <Button
             onClick={() => {

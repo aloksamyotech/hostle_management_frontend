@@ -15,6 +15,8 @@ import TotalHostels from './TotalHostels';
 import TotalAdmin from './TotalAdmins';
 import RoomsUpdate from './RoomsUpdate';
 import { t } from 'i18next';
+import url from 'constant/url';
+import { getApi } from 'constant/api';
 
 // ==============================|| SUPER ADMIN DEFAULT DASHBOARD ||============================== //
 
@@ -43,22 +45,22 @@ const SuperAdminDashboard = () => {
       setHostelData(resForHostel.data.totalRecodes);
 
       console.log('URL=>', `${REACT_APP_BACKEND_URL}/administrator/list`);
-      const responseForAdmin = await axios.get(`${REACT_APP_BACKEND_URL}/administrator/list`);
+      const responseForAdmin = await getApi(`${url.SuperAdminDashboard.adminList}`);
       console.log('response for responseForAdmin =========>', responseForAdmin);
       setAdminData(responseForAdmin.data.totalRecodes);
 
       console.log('URL=>', `${REACT_APP_BACKEND_URL}/student/allStudentCount`);
-      const responseForStudent = await axios.get(`${REACT_APP_BACKEND_URL}/student/allStudentCount`);
-      console.log('response for responseForStudent =========>', responseForStudent);
+      const responseForStudent = await getApi(`${url.SuperAdminDashboard.studentCount}`);
+      console.log('response for responseForStudent =========>z', responseForStudent);
       setStudnetData(responseForStudent.data.totalCount);
 
       console.log('URL=>', `${REACT_APP_BACKEND_URL}/room/alRooms`);
-      const responseForRoom = await axios.get(`${REACT_APP_BACKEND_URL}/room/alRooms`);
+      const responseForRoom = await getApi(`${url.SuperAdminDashboard.allRooms}`);
       console.log('response for responseForRoom =========>', responseForRoom);
       setRoomData(responseForRoom.data.roomRecords);
 
       console.log('URL=>', `${REACT_APP_BACKEND_URL}/room/calculate-beds`);
-      const responseForHostelBeds = await axios.get(`${REACT_APP_BACKEND_URL}/room/calculate-beds`);
+      const responseForHostelBeds = await getApi(`${url.SuperAdminDashboard.calculateBeds}`);
       console.log('response for responseForHostelBeds =========>', responseForHostelBeds);
 
       const hostelNames = responseForHostelBeds.data.hostelNames;
@@ -134,36 +136,8 @@ const SuperAdminDashboard = () => {
               />
             </Grid>
           ))}
-
-          {/* <Grid item xs={12} md={4} lg={4}>
-                <RoomsUpdate
-                  title="All Hostel Room Updates"
-                  chartData={[
-                    { label: 'America', value: 4344 },
-                    { label: 'Asia', value: 5435 },
-                    { label: 'Europe', value: 1443 },
-                    { label: 'Africa', value: 4443 }
-                  ]}
-                  chartColors={[theme.palette.primary.main, theme.palette.success.main, theme.palette.warning.main]}
-                />
-              </Grid> */}
         </Grid>
       </Grid>
-
-      {/* <Grid container spacing={3}>
-            {hostelsData.map((hostelData) => (
-                <Grid item xs={12} md={4} key={hostelData.HostelId}>
-                    <RoomsUpdate
-                        title={`Pie Chart for Hostel ${hostelData.HostelId}`}
-                        chartData={[
-                            { label: 'Occupied Beds', value: hostelData.TotalOccupiedBeds },
-                            { label: 'Available Beds', value: hostelData.TotalAvailableBeds }
-                        ]}
-                        chartColors={[theme.palette.primary.main, theme.palette.secondary.main]}
-                    />
-                </Grid>
-            ))}
-        </Grid> */}
     </Grid>
   );
 };

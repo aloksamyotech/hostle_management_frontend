@@ -32,6 +32,7 @@ import { styled } from '@mui/material/styles';
 import HomeIcon from '@mui/icons-material/Home';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
+import { deleteApi, getApi } from 'constant/api';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -88,7 +89,7 @@ const NoticeBoard = () => {
   const fetchNotices = async (hostelId) => {
     try {
       console.log('URL=>', `${REACT_APP_BACKEND_URL}/notice_board/index/${hostelId}`);
-      const response = await axios.get(`${url.notice.fetchAll}${hostelId}`);
+      const response = await getApi(`${url.notice.fetchAll}${hostelId}`);
       console.log('response', response);
       setAllNotices(response.data.result);
       setTotalCount(response.data.totalRecodes);
@@ -119,7 +120,7 @@ const NoticeBoard = () => {
   const handleConfirmDelete = async () => {
     try {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/notice_board/delete/${deleteNoticeId}`);
-      let response = await axios.delete(`${url.notice.delete}${deleteNoticeId}`);
+      let response = await deleteApi(`${url.notice.delete}${deleteNoticeId}`);
       console.log('delete =====> response =====>', response);
       setOpenDeleteDialog(false);
       fetchNotices(hostelId);

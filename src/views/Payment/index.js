@@ -33,6 +33,7 @@ import { width } from '@mui/system';
 import { t } from 'i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import url from 'constant/url';
+import { getApi } from 'constant/api';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -95,7 +96,7 @@ const PaymentList = () => {
 
   const fetchPaymentData = async (hostelId) => {
     try {
-      const response = await axios.get(`${url.payments.list}${hostelId}`);
+      const response = await getApi(`${url.payments.list}${hostelId}`);
       setStudentPaymentData(response.data.result);
       setPaymentRecords(response.data.totalRecodes);
     } catch (error) {
@@ -236,36 +237,52 @@ const PaymentList = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <HeaderCell>#</HeaderCell>
-                  <HeaderCell>{t('Student Name')}</HeaderCell>
-                  <HeaderCell>{t('Month')}</HeaderCell>
-                  <HeaderCell>{t('Library Amount')}</HeaderCell>
-                  <HeaderCell>{t('Food Amount')}</HeaderCell>
-                  <HeaderCell>{t('Hostel Rent')}</HeaderCell>
-                  <HeaderCell>{t('Monthly Total Rent')}</HeaderCell>
-                  <HeaderCell>{t('Monthly Paid Amount')}</HeaderCell>
-                  <HeaderCell>{t('Monthly Pending Amount')}</HeaderCell>
-                  <HeaderCell>{t('Status')}</HeaderCell>
+                  <HeaderCell align="center">#</HeaderCell>
+                  <HeaderCell align="center">{t('Student Name')}</HeaderCell>
+                  <HeaderCell align="center">{t('Month')}</HeaderCell>
+                  <HeaderCell align="center">{t('Library Amount')}</HeaderCell>
+                  <HeaderCell align="center">{t('Food Amount')}</HeaderCell>
+                  <HeaderCell align="center">{t('Hostel Rent')}</HeaderCell>
+                  <HeaderCell align="center">{t('Monthly Total Rent')}</HeaderCell>
+                  <HeaderCell align="center">{t('Monthly Paid Amount')}</HeaderCell>
+                  <HeaderCell align="center">{t('Monthly Pending Amount')}</HeaderCell>
+                  <HeaderCell align="center">{t('Status')}</HeaderCell>
                 </TableRow>
               </TableHead>
 
               <TableBody>
                 {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
                   <TableRow key={row.id}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>
+                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                      {index + 1}
+                    </TableCell>
+                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
                       {row.studentName}
                       <br />
                       {row.studentPhoneNo}
                     </TableCell>
-                    <TableCell>{row.month}</TableCell>
-                    <TableCell>{row.libraryAmount}</TableCell>
-                    <TableCell>{row.foodAmount}</TableCell>
-                    <TableCell>{row.hostelRent}</TableCell>
-                    <TableCell>{row.monthlyTotalAmount}</TableCell>
-                    <TableCell>{row.paidAmount}</TableCell>
-                    <TableCell sx={{ color: row.monthlyPending > 0 ? 'red' : 'inherit' }}>{row.monthlyPending}</TableCell>
-                    <TableCell>
+                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                      {row.month}
+                    </TableCell>
+                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                      {row.libraryAmount}
+                    </TableCell>
+                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                      {row.foodAmount}
+                    </TableCell>
+                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                      {row.hostelRent}
+                    </TableCell>
+                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                      {row.monthlyTotalAmount}
+                    </TableCell>
+                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                      {row.paidAmount}
+                    </TableCell>
+                    <TableCell sx={{ color: row.monthlyPending > 0 ? 'red' : 'inherit', verticalAlign: 'middle' }} align="center">
+                      {row.monthlyPending}
+                    </TableCell>
+                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
                       <Stack direction="row" alignItems="center">
                         {row.monthlyPending > 0 ? (
                           <Typography variant="body2" color="error">

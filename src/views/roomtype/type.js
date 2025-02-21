@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import debounce from 'lodash.debounce';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
+import { postApi } from 'constant/api.js';
 const roomTypeValidationSchema = Yup.object({
   Roomtypee: Yup.string()
     .required('Room type name is required')
@@ -23,7 +24,7 @@ const AddRoomTypeForm = ({ hostelId, open, handleClose }) => {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        const response = await axios.post(`${url.roomtype.addType}${hostelId}`, values);
+        const response = await postApi(`${url.roomtype.addType}${hostelId}`, values);
 
         if (response.status === 201) {
           toast.success('Room type added successfully!');

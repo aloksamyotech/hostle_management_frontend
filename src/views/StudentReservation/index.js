@@ -41,6 +41,7 @@ import { t } from 'i18next';
 import url from '../../constant/url.js';
 import { EditOutlined, DeleteOutline, VisibilityOutlined } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { deleteApi, getApi, updateApi } from 'constant/api';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -89,7 +90,7 @@ const StudentReservation = () => {
   // Fetch All Student Data Here
   const fetchReserveStudentData = async (hostelId) => {
     try {
-      const response = await axios.get(`${url.studentReservation.index}${hostelId}`);
+      const response = await getApi(`${url.studentReservation.index}${hostelId}`);
       const students = response.data.result;
       setStudentsData(students);
       setTotalCount(response.data.totalRecodes);
@@ -143,7 +144,7 @@ const StudentReservation = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`${url.studentReservation.delete}${deleteStudentId}`);
+      await deleteApi(`${url.studentReservation.delete}${deleteStudentId}`);
       setOpenDeleteDialog(false);
       fetchReserveStudentData(hostelId);
     } catch (error) {
@@ -185,7 +186,7 @@ const StudentReservation = () => {
       console.log('url up =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/updateStatus/${id}`, {
         status: newStatus ? 'active' : 'deactive'
       });
-      const response = await axios.put(`${url.studentReservation.updateStatus}${id}`, {
+      const response = await updateApi(`${url.studentReservation.updateStatus}${id}`, {
         status: newStatus ? 'active' : 'deactive'
       });
       console.log('url down =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/updateStatus/${id}`, {

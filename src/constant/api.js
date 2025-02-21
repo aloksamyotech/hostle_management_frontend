@@ -1,28 +1,38 @@
 import axios from 'axios';
 export const postApi = async (url, data, headers = {}) => {
   try {
-    const defaultHeaders = {
-      'Content-Type': 'application/json',
-      ...headers
-    };
+    const isFormData = data instanceof FormData;
+    const defaultHeaders = isFormData ? { ...headers } : { 'Content-Type': 'application/json', ...headers };
+
+    console.log('Final API URL:', url);
+    console.log('Headers being sent:', defaultHeaders);
+    console.log('Data being sent:', data);
+
     const response = await axios.post(url, data, { headers: defaultHeaders });
     return response;
   } catch (error) {
-    console.error('API Error:', error.response || error.message);
+    console.error('API Error:', error.response?.data || error.message);
     throw new Error(error.response ? error.response.data : error.message);
   }
 };
+
 export const getApi = async (url, params = {}, headers = {}) => {
   try {
     const defaultHeaders = {
       'Content-Type': 'application/json',
       ...headers
     };
+
+    console.log('Requesting URL:', url);
+    console.log('Request Parameters:', params);
+
     const response = await axios.get(url, {
       headers: defaultHeaders,
       params: params
     });
-    return response.data;
+
+    console.log('Response:', response);
+    return response;
   } catch (error) {
     if (error.response && error.response.status === 404) {
       console.log('No data available');
@@ -32,6 +42,7 @@ export const getApi = async (url, params = {}, headers = {}) => {
     }
   }
 };
+
 export const updateApi = async (url, data, headers = {}) => {
   try {
     const defaultHeaders = {
@@ -39,7 +50,7 @@ export const updateApi = async (url, data, headers = {}) => {
       ...headers
     };
     const response = await axios.put(url, data, { headers: defaultHeaders });
-    return response.data;
+    return response;
   } catch (error) {
     console.error('API Error:', error.response || error.message);
     throw new Error(error.response ? error.response.data : error.message);

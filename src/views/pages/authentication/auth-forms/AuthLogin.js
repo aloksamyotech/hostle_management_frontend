@@ -38,7 +38,9 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Google from 'assets/images/icons/social-google.svg';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-
+import url from 'constant/url';
+import { postApi } from 'constant/api';
+import { t } from 'i18next';
 // import dotenv from "dotenv";
 // dotenv.config();
 // ============================|| FIREBASE - LOGIN ||============================ //
@@ -68,7 +70,7 @@ const FirebaseLogin = ({ ...others }) => {
 
   const loginApi = async (email, password) => {
     try {
-      const response = await axios.post(`http://localhost:4000/administrator/login`, {
+      const response = await postApi(`${url.ragistraion.login}`, {
         email,
         password
       });
@@ -174,17 +176,7 @@ const FirebaseLogin = ({ ...others }) => {
                 </FormHelperText>
               )}
             </FormControl>
-            {/* <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-              <FormControlLabel
-                control={
-                  <Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checked" color="primary" />
-                }
-                label="Remember me"
-              />
-              <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
-                Forgot Password?
-              </Typography>
-            </Stack> */}
+
             {errors.submit && (
               <Box sx={{ mt: 3 }}>
                 <FormHelperText error>{errors.submit}</FormHelperText>

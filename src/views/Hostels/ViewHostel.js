@@ -4,6 +4,7 @@ import { ArrowBack } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { t } from 'i18next';
+import url from 'constant/url';
 const ViewHostel = () => {
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   const [hostelDetails, setHostelDetails] = useState(null);
@@ -16,7 +17,7 @@ const ViewHostel = () => {
   useEffect(() => {
     const fetchHostelDetails = async () => {
       try {
-        const response = await axios.get(`${REACT_APP_BACKEND_URL}/hostel/view/${id}`);
+        const response = await axios.get(`${url.Hostels.view}${id}`);
         setHostelDetails(response.data.result);
       } catch (error) {
         console.error('Error Found:', error);
