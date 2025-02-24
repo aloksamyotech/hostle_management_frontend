@@ -269,7 +269,7 @@ const AddComplaint = (props) => {
             onClick={formik.handleSubmit}
             style={{ textTransform: 'capitalize' }}
             color="secondary"
-            disabled={loading || !formik.isValid}
+            disabled={loading}
           >
             {t('Save')}
           </Button>

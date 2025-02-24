@@ -27,10 +27,9 @@ import { getApi, postApi, updateApi } from 'constant/api.js';
 const roomValidationSchema = yup.object().shape({
   roomNumber: yup
     .string()
-
-    .required(t('Room number is required')),
-  roomType: yup.string().required(t('Room type is required')),
-  roomphoto: yup.mixed().required(t('Room photo is required'))
+    .matches(/^[a-zA-Z0-9]{1,4}$/, t('Room number must be 1 to 4 characters (letters or numbers)')) // ✅ Sirf 1-4 letters ya numbers allow karega
+    .max(4, t('Room number cannot exceed 4 characters')) // ✅ Galti fix ki
+    .required(t('Room number is required'))
 });
 
 const AddRoom = ({ open, handleClose, hostelId, editRoom }) => {
@@ -175,7 +174,7 @@ const AddRoom = ({ open, handleClose, hostelId, editRoom }) => {
               }}
               style={{ textTransform: 'capitalize' }}
               color="secondary"
-              disabled={loading || !formik.isValid}
+              disabled={loading}
             >
               {loading ? 'Saving...' : 'Save'}
             </Button>

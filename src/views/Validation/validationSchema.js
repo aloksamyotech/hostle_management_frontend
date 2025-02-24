@@ -292,7 +292,7 @@ export const attendenceValidationSchema = Yup.object({
 });
 
 export const productValidationSchema = Yup.object({
-  productName: Yup.string().required(t('Product Name is required')).max(10, t('Can not take more than 10 words')),
+  productName: Yup.string().required(t('Product Name is required')).max(30, t('Can not take more than 30 words')),
   mesurment: Yup.string().required(t('Measurement is required'))
 });
 

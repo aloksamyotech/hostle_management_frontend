@@ -106,16 +106,14 @@ const PendingFeeStudent = () => {
                     {paymentData.map((row) =>
                       row.monthlyPending > 0 ? (
                         <TableRow key={row.id}>
-                          <TableCell align="center" sx={{ verticalAlign: 'middle', textAlign: 'center' }}>
+                          <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
                             <Box textAlign="center">
                               {row.studentName}
                               <br />
                               {row.studentPhoneNo}
                             </Box>
                           </TableCell>
-                          <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
-                            {row.month}
-                          </TableCell>
+                          <TableCell sx={{ verticalAlign: 'middle' }}>{row.month}</TableCell>
                           <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
                             {row.libraryAmount}
                           </TableCell>

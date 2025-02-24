@@ -252,72 +252,71 @@ const PaymentList = () => {
 
               <TableBody>
                 {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                  <TableRow key={row.id}>
-                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                  <TableRow key={row.id} sx={{ '& > *': { padding: '12px' } }}>
+                    <TableCell align="left" sx={{ verticalAlign: 'middle', paddingX: '16px' }}>
                       {index + 1}
                     </TableCell>
-                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                    <TableCell align="left" sx={{ verticalAlign: 'middle', paddingX: '16px' }}>
                       {row.studentName}
                       <br />
                       {row.studentPhoneNo}
                     </TableCell>
-                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                    <TableCell align="left" sx={{ verticalAlign: 'middle', paddingX: '16px' }}>
                       {row.month}
                     </TableCell>
-                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                    <TableCell align="left" sx={{ verticalAlign: 'middle', paddingX: '16px' }}>
                       {row.libraryAmount}
                     </TableCell>
-                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                    <TableCell align="left" sx={{ verticalAlign: 'middle', paddingX: '16px' }}>
                       {row.foodAmount}
                     </TableCell>
-                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                    <TableCell align="left" sx={{ verticalAlign: 'middle', paddingX: '16px' }}>
                       {row.hostelRent}
                     </TableCell>
-                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                    <TableCell align="left" sx={{ verticalAlign: 'middle', paddingX: '16px' }}>
                       {row.monthlyTotalAmount}
                     </TableCell>
-                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
+                    <TableCell align="left" sx={{ verticalAlign: 'middle', paddingX: '16px' }}>
                       {row.paidAmount}
                     </TableCell>
-                    <TableCell sx={{ color: row.monthlyPending > 0 ? 'red' : 'inherit', verticalAlign: 'middle' }} align="center">
+                    <TableCell
+                      align="left"
+                      sx={{ color: row.monthlyPending > 0 ? 'red' : 'inherit', verticalAlign: 'middle', paddingX: '16px' }}
+                    >
                       {row.monthlyPending}
                     </TableCell>
-                    <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
-                      <Stack direction="row" alignItems="center">
+                    <TableCell align="left" sx={{ verticalAlign: 'middle', paddingX: '16px' }}>
+                      <Stack direction="row" alignItems="center" spacing={2}>
                         {row.monthlyPending > 0 ? (
-                          <Typography variant="body2" color="error">
-                            <Button
-                              variant="contained"
-                              color="error"
-                              size="small"
-                              sx={{
-                                minWidth: '60px',
-                                padding: '2px 8px',
-                                fontSize: '12px',
-                                borderRadius: '6px',
-                                lineHeight: 1.2
-                              }}
-                            >
-                              {t('Pending')}
-                            </Button>
-                          </Typography>
+                          <Button
+                            variant="contained"
+                            color="error"
+                            size="small"
+                            sx={{
+                              minWidth: '70px',
+                              padding: '6px 12px',
+                              fontSize: '12px',
+                              borderRadius: '6px',
+                              lineHeight: 1.2
+                            }}
+                          >
+                            {t('Pending')}
+                          </Button>
                         ) : (
-                          <Typography variant="body2" color="success">
-                            <Button
-                              variant="contained"
-                              color="success"
-                              size="small"
-                              sx={{
-                                minWidth: '60px',
-                                padding: '2px 8px',
-                                fontSize: '12px',
-                                borderRadius: '6px',
-                                lineHeight: 1.2
-                              }}
-                            >
-                              {t('Complete')}
-                            </Button>
-                          </Typography>
+                          <Button
+                            variant="contained"
+                            color="success"
+                            size="small"
+                            sx={{
+                              minWidth: '70px',
+                              padding: '6px 12px',
+                              fontSize: '12px',
+                              borderRadius: '6px',
+                              lineHeight: 1.2
+                            }}
+                          >
+                            {t('Complete')}
+                          </Button>
                         )}
                       </Stack>
                     </TableCell>

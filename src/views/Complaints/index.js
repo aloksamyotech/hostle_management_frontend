@@ -208,10 +208,10 @@ const ResidentComplaints = () => {
                 <TableHead>
                   <TableRow>
                     <HeaderCell>#</HeaderCell>
-                    <HeaderCell>{t('Student Contact Details')}</HeaderCell>
+                    <HeaderCell>{t('Contact Details')}</HeaderCell>
                     <HeaderCell>{t('Room No')}</HeaderCell>
                     <HeaderCell>{t('Date')}</HeaderCell>
-                    <HeaderCell>{t('Complaint Discription')}</HeaderCell>
+                    <HeaderCell>{t('Discription')}</HeaderCell>
                     <HeaderCell>{t('Status')}</HeaderCell>
                     <HeaderCell>{t('Action')}</HeaderCell>
                   </TableRow>

@@ -29,14 +29,15 @@ const ViewRoom = () => {
   const fetchRoomDetails = async () => {
     try {
       const { data } = await getApi(`${url.room.view}${id}`);
-      setRoomDetails(data?.result);
-      setbedDetails(data?.result.bedBookings);
-      console.log('data=========================>rohit malviya', data.result._id);
+      setRoomDetails(data?.result || {});
+      setbedDetails(data?.result.bedBookings || []);
+      console.log('data=========================>rohit malviya', data?.result.bedBookings || []);
     } catch (err) {
       setError('Failed to fetch room details. Please try again.');
     }
   };
   console.log('bedDatils are ======================>', roomDetail);
+  console.log('bed details are ========================================>', beddetails);
 
   useEffect(() => {
     fetchRoomDetails();
@@ -94,17 +95,14 @@ const ViewRoom = () => {
             </Typography>
             <Grid container spacing={2}>
               {beddetails?.map((bed, index) => (
-                <Grid item xs={12} sm={6} md={4} key={bed.bedId}>
+                <Grid item xs={12} sm={6} md={4} key={bed.bedId?.bedId || index}>
                   <Card sx={{ padding: 2, textAlign: 'center', boxShadow: 3 }}>
                     <Typography variant="subtitle1" fontWeight="bold">
                       Bed {index + 1}
                     </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      ID: {bed.bedId}
-                    </Typography>
+
                     <Typography
                       variant="body2"
-                      color="textSecondary"
                       sx={{
                         cursor: bed.studentName ? 'pointer' : 'default',
                         textDecoration: bed.studentName ? 'underline' : 'none',
