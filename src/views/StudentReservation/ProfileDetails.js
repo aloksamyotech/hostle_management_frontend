@@ -47,7 +47,7 @@ import axios from 'axios';
 import moment from 'moment';
 import TableStyle from '../../ui-component/TableStyle';
 import { Avatar } from '@mui/material';
-// import Cover from '../../../public/cover.jpg';
+
 import HomeIcon from '@mui/icons-material/Home';
 import Coverr from './cover.jpg';
 import url from '../../constant/url.js';
@@ -91,25 +91,20 @@ const ProfileDetails = () => {
 
   const fetchStudentDetails = async () => {
     try {
-      console.log('Making API With This URL==>', `${REACT_APP_BACKEND_URL}/sudent_reservation/view/${id}`);
       const response = await getApi(`${url.studentReservation.view}${id}`);
-      console.log('API fetch StudentDetails response=>', response);
-      setProfileData(response.data.result);
+      setProfileData(response.data?.result);
 
       setStudentName(response.data.result.studentName);
     } catch (error) {
       console.error('Error fetching reserved student details:', error);
     }
   };
-  console.log('profileData===>', profileData);
 
   const fetchStudentPaymentData = async () => {
     try {
-      console.log('Making API With This URL==>', `${REACT_APP_BACKEND_URL}/student_payment/paymenthistory/${id}`);
       const response = await getApi(`${url.studentReservation.paymenthistory}${id}`);
-      console.log('API Payment Data response=>', response);
-      setPaymentData(response.data.result);
-      setTotalCount(response.data.totalRecodes);
+      setPaymentData(response?.data?.result);
+      setTotalCount(response?.data?.totalRecodes);
     } catch (error) {
       console.error('Error fetching student payment details:', error);
     }
@@ -117,11 +112,19 @@ const ProfileDetails = () => {
 
   const fetchVisitorData = async () => {
     try {
-      console.log('URL =>', `${REACT_APP_BACKEND_URL}/visitor/list/${id}`);
-      const response = await getApi(`${url.studentReservation.visitorlist}${id}`);
-      console.log(' fetchVisitorData response===>', response);
-      setVisitorData(response.data.result);
-      setTotalVisitorCount(response.data.totalRecodes);
+      const apiUrl = `${url.studentReservation.visitorlist}${id}`;
+      console.log('Fetching visitor data from:', apiUrl);
+
+      const response = await getApi(apiUrl);
+      const result = response?.data?.result;
+      const totalVisitors = response?.data?.totalRecodes || 0;
+
+      if (result) {
+        setVisitorData(result);
+        setTotalVisitorCount(totalVisitors);
+      } else {
+        console.warn('No visitor data available.');
+      }
     } catch (error) {
       console.error('Error fetching visitors data:', error);
     }

@@ -110,7 +110,7 @@ const ViewRoom = () => {
                       }}
                       onClick={bed.studentName ? () => handleNavigate(bed.id) : undefined}
                     >
-                      Student Name: {bed.studentName || 'Not Booked'}
+                      {bed.studentName || 'Not Booked'}
                     </Typography>
                   </Card>
                 </Grid>

@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import debounce from 'lodash.debounce';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
 import { postApi } from 'constant/api.js';
@@ -21,6 +20,7 @@ const AddRoomTypeForm = ({ hostelId, open, handleClose }) => {
   const formik = useFormik({
     initialValues: { Roomtypee: '' },
     validationSchema: roomTypeValidationSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       setLoading(true);
       try {
@@ -40,16 +40,11 @@ const AddRoomTypeForm = ({ hostelId, open, handleClose }) => {
     }
   });
 
-  const debouncedSubmit = useCallback(
-    debounce(() => {
-      if (formik.isValid && !formik.isSubmitting) {
-        console.log('debauncing is working or not');
-
-        formik.handleSubmit();
-      }
-    }, 500),
-    [formik]
-  );
+  const handleCancel = () => {
+    formik.resetForm();
+    formik.setTouched({});
+    handleClose();
+  };
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
@@ -74,11 +69,27 @@ const AddRoomTypeForm = ({ hostelId, open, handleClose }) => {
         </form>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="secondary" disabled={loading}>
-          {t('Cancel')}
+        <Button
+          type="submit"
+          variant="contained"
+          onClick={formik.handleSubmit}
+          style={{ textTransform: 'capitalize' }}
+          color="secondary"
+          disabled={loading}
+        >
+          {t('Save')}
         </Button>
-        <Button type="submit" onClick={debouncedSubmit} color="primary" disabled={loading || !formik.isValid}>
-          {loading ? 'Adding...' : 'Add'}
+        <Button
+          type="reset"
+          variant="outlined"
+          style={{ textTransform: 'capitalize' }}
+          onClick={() => {
+            formik.resetForm();
+            handleClose();
+          }}
+          color="error"
+        >
+          {t('Cancel')}
         </Button>
       </DialogActions>
     </Dialog>

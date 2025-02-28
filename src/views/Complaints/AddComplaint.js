@@ -38,7 +38,6 @@ const AddComplaint = (props) => {
       console.log('URL =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/index/${hostelId}`);
       getApi(`${url.studentComplaint.indexx}${hostelId}`)
         .then((response) => {
-          console.log('in hook =>', response);
           const studentData = response.data.result
             .filter((student) => student.status !== 'deactive')
             .map((student) => ({

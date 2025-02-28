@@ -28,6 +28,7 @@ import { EditOutlined, DeleteOutline } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { t } from 'i18next';
+import { Tooltip } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link as RouterLink } from 'react-router-dom';
 import url from 'constant/url';
@@ -119,6 +120,13 @@ const Hostel = () => {
       {t('List')}
     </Typography>
   ];
+
+  const cellStyles = {
+    maxWidth: '150px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+  };
   return (
     <>
       <AddHostel open={openAdd} handleClose={handleCloseAdd} editHostelData={editHostel} />
@@ -179,22 +187,47 @@ const Hostel = () => {
                       <TableRow key={row._id}>
                         <TableCell
                           align="center"
-                          sx={{ verticalAlign: 'middle' }}
+                          sx={{
+                            verticalAlign: 'middle',
+                            maxWidth: '150px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                          }}
                           style={{ cursor: 'pointer', textDecoration: 'underline', color: 'blue' }}
                           onClick={() => handleNavigate(row._id)}
                         >
-                          {row.hostelName}
+                          <Tooltip title={row.hostelName} arrow>
+                            <span style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {row.hostelName}
+                            </span>
+                          </Tooltip>
                         </TableCell>
-                        <TableCell>{row.ownerName}</TableCell>
-                        <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
-                          {row.email}
+
+                        <TableCell align="center" sx={cellStyles}>
+                          <Tooltip title={row.ownerName} arrow>
+                            <span style={{ display: 'block' }}>{row.ownerName}</span>
+                          </Tooltip>
                         </TableCell>
-                        <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
-                          {row.hostelPhoneNumber}
+
+                        <TableCell align="center" sx={cellStyles}>
+                          <Tooltip title={row.email} arrow>
+                            <span style={{ display: 'block' }}>{row.email}</span>
+                          </Tooltip>
                         </TableCell>
-                        <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
-                          {row.ownerPhoneNumber}
+
+                        <TableCell align="center" sx={cellStyles}>
+                          <Tooltip title={row.hostelPhoneNumber} arrow>
+                            <span style={{ display: 'block' }}>{row.hostelPhoneNumber}</span>
+                          </Tooltip>
                         </TableCell>
+
+                        <TableCell align="center" sx={cellStyles}>
+                          <Tooltip title={row.ownerPhoneNumber} arrow>
+                            <span style={{ display: 'block' }}>{row.ownerPhoneNumber}</span>
+                          </Tooltip>
+                        </TableCell>
+
                         <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
                           <Stack direction="row">
                             <IconButton onClick={() => handleEdit(row._id)} aria-label="edit" style={{ color: 'green' }}>

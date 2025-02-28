@@ -18,7 +18,8 @@ import {
   IconCategory,
   IconReceipt,
   IconUserPlus,
-  IconBadge4k
+  IconBadge4k,
+  IconAlignBoxBottomCenter
 } from '@tabler/icons';
 
 // constant
@@ -40,7 +41,9 @@ const icons = {
   IconMenu,
   IconCategory,
   IconReceipt,
-  IconUserPlus
+  IconUserPlus,
+  IconBadge4k,
+  IconAlignBoxBottomCenter
 };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
@@ -113,14 +116,7 @@ const dashboard = {
       icon: icons.IconMail,
       breadcrumbs: false
     },
-    // {
-    //   id: '08',
-    //   title: 'Resident Attendence',
-    //   type: 'item',
-    //   url: '/dashboard/attendence',
-    //   icon: icons.IconChecklist,
-    //   breadcrumbs: false
-    // },
+
     {
       id: '08',
       title: 'Canteen Inventory',
@@ -180,10 +176,10 @@ const dashboard = {
 
     {
       id: '15',
-      title: 'Room Type',
+      title: 'Roomss Type',
       type: 'item',
       url: '/dashboard/type',
-      icon: icons.IconBadge4k,
+      icon: icons.IconAlignBoxBottomCenter,
       breadcrumbs: false
     }
   ]

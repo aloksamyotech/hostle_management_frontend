@@ -17,7 +17,7 @@ import { ArrowBack } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import axios from 'axios';
+
 import { useState } from 'react';
 import moment from 'moment';
 import Cookies from 'js-cookie';
@@ -46,7 +46,7 @@ const ViewReserveStudent = () => {
             Authorization: `Bearer ${Cookies.get('Admin_Token')}`
           }
         });
-        console.log('API response=>', response);
+        console.log('API response= rohit malviya>', response);
         setRevStudentData(response.data.result);
       } catch (error) {
         console.error('Error fetching reserved student details:', error);

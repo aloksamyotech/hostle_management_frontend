@@ -34,6 +34,7 @@ import { t } from 'i18next';
 import url from '../../constant/url.js';
 import { Link as RouterLink } from 'react-router-dom';
 import { deleteApi } from 'constant/api';
+import { toast } from 'react-toastify';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -65,6 +66,7 @@ const Room = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [expanded, setExpanded] = useState(false);
 
   const handleOpenAdd = () => {
     setOpenAdd(true);
@@ -80,7 +82,7 @@ const Room = () => {
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   const handleNavigate = (id) => {
-    navigate(`/dashboard/room/view/${id}`);
+    navigate(`${url.navigates.roomview}${id}`);
   };
 
   useEffect(() => {
@@ -98,10 +100,9 @@ const Room = () => {
           Authorization: `Bearer ${Cookies.get('Admin_Token')}`
         }
       });
-      console.log('response is ====================', response.data);
 
-      setRoomData(response.data.result);
-      setTotalCount(response.data.totalRecodes);
+      setRoomData(response?.data?.result);
+      setTotalCount(response?.data?.totalRecodes);
     } catch (error) {
       console.error('Error fetching room data:', error);
     }
@@ -124,11 +125,14 @@ const Room = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await deleteApi(`${url.room.delete}${deleteStudentId}`, {
+      const response = await deleteApi(`${url.room.delete}${deleteStudentId}`, {
         headers: {
           Authorization: `Bearer ${Cookies.get('Admin_Token')}`
         }
       });
+      if (response) {
+        toast.success('Room has been deleted');
+      }
 
       setOpenDeleteDialog(false);
       fetchRoomsData(hostelId);
@@ -157,6 +161,13 @@ const Room = () => {
       {t('List')}
     </Typography>
   ];
+  const cellStyles = {
+    maxWidth: expanded ? 'none' : '60px',
+    whiteSpace: expanded ? 'normal' : 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    cursor: 'pointer'
+  };
 
   return (
     <>
@@ -221,11 +232,14 @@ const Room = () => {
                     <TableCell align="center">{index + 1}</TableCell>
                     <TableCell
                       align="center"
-                      sx={{ cursor: 'pointer', textDecoration: 'underline', color: 'blue' }}
-                      onClick={() => handleNavigate(row._id)}
+                      sx={{ cursor: 'pointer', textDecoration: 'underline', color: 'blue', ...cellStyles }}
+                      onClick={() => {
+                        handleNavigate(row._id);
+                      }}
                     >
                       {row.roomNumber}
                     </TableCell>
+
                     <TableCell align="center">{row.roomType}</TableCell>
                     <TableCell align="center">{row.numOfBeds}</TableCell>
                     <TableCell align="center">{row.occupiedBeds}</TableCell>
@@ -260,16 +274,16 @@ const Room = () => {
       </Box>
 
       <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
-        <DialogTitle variant="h4">Delete Room</DialogTitle>
+        <DialogTitle variant="h4">{t('Delete Room')}</DialogTitle>
         <DialogContent>
-          <Typography variant="body2">Are you sure you want to delete this Room Details?</Typography>
+          <Typography variant="body2">{t('Are you sure you want to delete this Room Details?')}</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDeleteDialog} variant="contained" color="primary">
-            Cancel
+            {t('Cancel')}
           </Button>
           <Button onClick={handleConfirmDelete} variant="contained" color="error">
-            Delete
+            {t('Delete')}
           </Button>
         </DialogActions>
       </Dialog>

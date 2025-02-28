@@ -12,7 +12,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useFormik } from 'formik';
 import { FormControl, FormHelperText, FormLabel, Select, MenuItem } from '@mui/material';
 import { productPurchesValidationSchema } from 'views/Validation/validationSchema';
-import axios from 'axios';
+
 import { useState, useEffect } from 'react';
 import moment from 'moment';
 import { toast } from 'react-toastify';
@@ -25,7 +25,6 @@ const PurchaseInventory = (props) => {
 
   const [allProductList, setProductList] = useState([]);
   const [Loading, setLoading] = useState(false);
-  const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   //When Found editPurchase Data
   useEffect(() => {
@@ -78,7 +77,6 @@ const PurchaseInventory = (props) => {
         } else {
           response = await postApi(`${url.purchaseInventory.add}${hostelId}`, values);
         }
-        console.log('response==>', response);
 
         if (response.status === 201 || response.status === 200) {
           toast.success('Inventory Purchase Add Successfully');

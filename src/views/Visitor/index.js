@@ -52,7 +52,6 @@ const TableRow = styled(MuiTableRow)(({ theme }) => ({
 
 const Visitors = () => {
   const [openAdd, setOpenAdd] = useState(false);
-  const [adminId, setAdminId] = useState(null);
   const [hostelId, setHostelId] = useState(null);
   const [allVisitors, setAllVisitors] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -66,8 +65,6 @@ const Visitors = () => {
     fetchVisitorData(hostelId);
   };
 
-  const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-
   //Get Admin Obj Id Which is Seted In Cookies
   useEffect(() => {
     const HosId = Cookies.get('_Id');
@@ -78,31 +75,24 @@ const Visitors = () => {
   }, []);
   console.log('hostelId==>', hostelId);
 
-  //Fetch Visitor's Data
   const fetchVisitorData = async (hostelId) => {
     try {
-      console.log('URL =>', `${REACT_APP_BACKEND_URL}/visitor/index/${hostelId}`);
       const response = await getApi(`${url.visitor.index}${hostelId}`, {
         headers: {
           Authorization: `Bearer ${Cookies.get('Admin_Token')}`
         }
       });
-      console.log('response===>', response);
-      setAllVisitors(response.data.result);
-      setTotalCount(response.data.totalRecodes);
+      setAllVisitors(response?.data?.result);
+      setTotalCount(response?.data?.totalRecodes);
     } catch (error) {
       console.error('Error fetching visitors data:', error);
     }
   };
-  console.log('allVisitors==>', allVisitors);
 
-  // Handle Pages
   const handleChangePage = (event, newPage) => {
-    console.log('New Page:', newPage);
     setPage(newPage);
   };
 
-  // Handle Rows PerPage
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -176,12 +166,12 @@ const Visitors = () => {
                 </TableHead>
                 <TableBody>
                   {allVisitors.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                    <TableRow key={row.id}>
+                    <TableRow key={row?.id}>
                       <TableCell>{index + 1}</TableCell>
-                      <TableCell>{row.studentName}</TableCell>
-                      <TableCell>{row.visitorName}</TableCell>
-                      <TableCell>{row.phoneNumber}</TableCell>
-                      <TableCell>{moment(row.dateTime).format('YYYY-MM-DD')}</TableCell>
+                      <TableCell>{row?.studentName}</TableCell>
+                      <TableCell>{row?.visitorName}</TableCell>
+                      <TableCell>{row?.phoneNumber}</TableCell>
+                      <TableCell>{moment(row?.dateTime).format('YYYY-MM-DD')}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

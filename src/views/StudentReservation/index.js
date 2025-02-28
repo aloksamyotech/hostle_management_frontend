@@ -91,9 +91,9 @@ const StudentReservation = () => {
   const fetchReserveStudentData = async (hostelId) => {
     try {
       const response = await getApi(`${url.studentReservation.index}${hostelId}`);
-      const students = response.data.result;
+      const students = response.data?.result;
       setStudentsData(students);
-      setTotalCount(response.data.totalRecodes);
+      setTotalCount(response?.data?.totalRecodes);
 
       const initialStatus = {};
       students.forEach((student) => {
@@ -124,7 +124,7 @@ const StudentReservation = () => {
   };
 
   const handleNavigate = (id) => {
-    navigate(`/dashboard/student_reservation/view_profile/${id}`);
+    navigate(`${url.navigates.view_profile}${id}`);
   };
 
   const handleEdit = (id) => {
@@ -152,7 +152,6 @@ const StudentReservation = () => {
     }
   };
 
-  // For Filter Search Input
   const handleChange = (event) => {
     setQuery(event.target.value);
   };
@@ -171,30 +170,15 @@ const StudentReservation = () => {
   };
 
   const filteredData = studentData.filter(generalFilter);
-  console.log('fitered sutdent data is ==========================>', filteredData);
-  // console.log(`http://localhost:4000/uploads/students/${filtered.studentphoto}`);
 
   const handleStatusToggle = async (id) => {
     const newStatus = !status[id];
-    console.log('on id =>id', id, 'status=>', newStatus);
-    // if(newStatus){
-    //   status = 'active'
-    // }else{
-    //   status = 'deactive'
-    // }
+
     try {
-      console.log('url up =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/updateStatus/${id}`, {
-        status: newStatus ? 'active' : 'deactive'
-      });
       const response = await updateApi(`${url.studentReservation.updateStatus}${id}`, {
         status: newStatus ? 'active' : 'deactive'
       });
-      console.log('url down =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/updateStatus/${id}`, {
-        status: newStatus ? 'active' : 'deactive'
-      });
-      console.log('response     ===========>   ', response);
       setStatus((prevStatus) => ({ ...prevStatus, [id]: newStatus }));
-      console.log('on id =========>id', id, 'status=>', newStatus);
     } catch (error) {
       console.error('Error updating student status:', error);
     }
@@ -369,9 +353,9 @@ const StudentReservation = () => {
 
       {/*-------------------- Dialog for Delete ----------------- */}
       <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
-        <DialogTitle variant="h4">Delete Administrator</DialogTitle>
+        <DialogTitle variant="h4">{t('Delete Administrator')}</DialogTitle>
         <DialogContent>
-          <Typography variant="body2">Are you sure you want to delete this Student Details?</Typography>
+          <Typography variant="body2">{t('Are you sure you want to delete this Student Details?')}</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDeleteDialog} variant="contained" color="primary">

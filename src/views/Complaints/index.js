@@ -35,6 +35,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
 import { deleteApi, getApi } from 'constant/api';
+import { Tooltip } from '@mui/material';
+
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -68,6 +70,7 @@ const ResidentComplaints = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [expanded, setExpanded] = useState(false);
 
   const handleOpenAdd = () => {
     setOpenAdd(true);
@@ -90,9 +93,8 @@ const ResidentComplaints = () => {
 
   const fetchAllComplaint = async (hostelId) => {
     try {
-      console.log('URL =>', `${REACT_APP_BACKEND_URL}/student_complaint/index/${hostelId}`);
       const response = await getApi(`${url.studentComplaint.index}${hostelId}`, {});
-      console.log('complaint response ===>', response);
+
       setAllComplaints(response.data.result);
       setTotalCount(response.data.totalRecodes);
     } catch (error) {
@@ -158,6 +160,18 @@ const ResidentComplaints = () => {
       {t('List')}
     </Typography>
   ];
+
+  const toggleExpand = () => {
+    setExpanded((prev) => !prev);
+  };
+
+  const cellStyles = {
+    maxWidth: expanded ? 'none' : '60px',
+    whiteSpace: expanded ? 'normal' : 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    cursor: 'pointer'
+  };
 
   return (
     <>
@@ -227,7 +241,10 @@ const ResidentComplaints = () => {
                       </TableCell>
                       <TableCell>{row.roomNumber}</TableCell>
                       <TableCell>{moment(row.datetime).format('YYYY-MM-DD')}</TableCell>
-                      <TableCell>{row.problemDescription}</TableCell>
+                      <TableCell sx={cellStyles} onClick={toggleExpand}>
+                        {row.problemDescription}
+                      </TableCell>
+
                       <TableCell>
                         <Stack direction="row" alignItems="center">
                           {row.status === 'register' ? (
@@ -237,11 +254,11 @@ const ResidentComplaints = () => {
                                 color="error"
                                 size="small"
                                 sx={{
-                                  minWidth: '60px',
-                                  padding: '2px 8px',
-                                  fontSize: '12px',
-                                  borderRadius: '6px',
-                                  lineHeight: 1.2
+                                  minWidth: '50px',
+                                  padding: '4px 8px',
+                                  fontSize: '10px',
+                                  borderRadius: '4px',
+                                  lineHeight: 1
                                 }}
                               >
                                 {t('Register')}
@@ -254,11 +271,11 @@ const ResidentComplaints = () => {
                                 color="warning"
                                 size="small"
                                 sx={{
-                                  minWidth: '60px',
-                                  padding: '2px 8px',
-                                  fontSize: '12px',
-                                  borderRadius: '6px',
-                                  lineHeight: 1.2
+                                  minWidth: '50px',
+                                  padding: '4px 8px',
+                                  fontSize: '10px',
+                                  borderRadius: '4px',
+                                  lineHeight: 1
                                 }}
                               >
                                 {t('In Progress')}
@@ -271,11 +288,11 @@ const ResidentComplaints = () => {
                                 color="success"
                                 size="small"
                                 sx={{
-                                  minWidth: '60px',
-                                  padding: '2px 8px',
-                                  fontSize: '12px',
-                                  borderRadius: '6px',
-                                  lineHeight: 1.2
+                                  minWidth: '50px',
+                                  padding: '4px 8px',
+                                  fontSize: '10px',
+                                  borderRadius: '4px',
+                                  lineHeight: 1
                                 }}
                               >
                                 {t('Complete')}
@@ -284,7 +301,6 @@ const ResidentComplaints = () => {
                           ) : null}
                         </Stack>
                       </TableCell>
-
                       <TableCell>
                         <Stack direction="row">
                           <IconButton onClick={() => handleEdit(row._id)} aria-label="edit" style={{ color: 'green' }}>

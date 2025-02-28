@@ -90,7 +90,7 @@ const InventoryConsumption = () => {
   const fetchConsumptionProducts = async (hostelId) => {
     try {
       const response = await getApi(`${url.consumptionInventory.index}${hostelId}`);
-      console.log('response==rohit>', response);
+
       setConsumeProducts(response.data.result);
       setTotalCount(response.data.totalRecodes);
     } catch (error) {
@@ -203,23 +203,23 @@ const InventoryConsumption = () => {
                         {index + 1}
                       </TableCell>
                       <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
-                        {row.productName}
+                        {row?.productName}
                       </TableCell>
                       <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
-                        {row.quantity}
+                        {row?.quantity}
                       </TableCell>
                       <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
-                        {row.remaning}
+                        {row?.remaning}
                       </TableCell>
                       <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
-                        {moment(row.date).format('YYYY-MM-DD')}
+                        {moment(row?.date).format('YYYY-MM-DD')}
                       </TableCell>
                       <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
                         <Stack direction="row" justifyContent={'center'}>
-                          <IconButton onClick={() => handleEdit(row._id)} aria-label="edit" style={{ color: 'green' }}>
+                          <IconButton onClick={() => handleEdit(row?._id)} aria-label="edit" style={{ color: 'green' }}>
                             <EditOutlined />
                           </IconButton>
-                          <IconButton onClick={() => handleDelete(row._id)} aria-label="delete" style={{ color: 'red' }}>
+                          <IconButton onClick={() => handleDelete(row?._id)} aria-label="delete" style={{ color: 'red' }}>
                             <DeleteOutline />
                           </IconButton>
                         </Stack>

@@ -97,8 +97,8 @@ const PaymentList = () => {
   const fetchPaymentData = async (hostelId) => {
     try {
       const response = await getApi(`${url.payments.list}${hostelId}`);
-      setStudentPaymentData(response.data.result);
-      setPaymentRecords(response.data.totalRecodes);
+      setStudentPaymentData(response.data?.result);
+      setPaymentRecords(response.data?.totalRecodes);
     } catch (error) {
       console.error('Error fetching payment data:', error);
     }
@@ -293,11 +293,11 @@ const PaymentList = () => {
                             color="error"
                             size="small"
                             sx={{
-                              minWidth: '70px',
-                              padding: '6px 12px',
-                              fontSize: '12px',
-                              borderRadius: '6px',
-                              lineHeight: 1.2
+                              minWidth: '50px',
+                              padding: '4px 8px',
+                              fontSize: '10px',
+                              borderRadius: '4px',
+                              lineHeight: 1
                             }}
                           >
                             {t('Pending')}
@@ -308,11 +308,11 @@ const PaymentList = () => {
                             color="success"
                             size="small"
                             sx={{
-                              minWidth: '70px',
-                              padding: '6px 12px',
-                              fontSize: '12px',
-                              borderRadius: '6px',
-                              lineHeight: 1.2
+                              minWidth: '50px',
+                              padding: '4px 8px',
+                              fontSize: '10px',
+                              borderRadius: '4px',
+                              lineHeight: 1
                             }}
                           >
                             {t('Complete')}

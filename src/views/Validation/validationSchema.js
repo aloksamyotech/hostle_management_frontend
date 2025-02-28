@@ -136,13 +136,15 @@ export const hostelValidationSchema = Yup.object({
 export const hostelNewValidationSchema = Yup.object({
   hostelName: Yup.string()
     .matches(/^[A-Za-z\s]+$/, t('Name must contain only letters'))
-    .required(t('Hostel Name is required')),
+    .required(t('Hostel Name is required'))
+    .max(30, 'can not accept more than 30 latters'),
   hostelPhoneNumber: Yup.string()
     .matches(/^[6-9]\d{9}$/, t('Invalid phone number'))
     .required(t('Phone number is required')),
   ownerName: Yup.string()
     .matches(/^[A-Za-z\s]+$/, t('Name must contain only letters'))
-    .required(t('Owner Name is required')),
+    .required(t('Owner Name is required'))
+    .max(30, 'not accept more than 30 words'),
   ownerPhoneNumber: Yup.string()
     .matches(/^[6-9]\d{9}$/, t('Invalid phone number'))
     .required(t('Phone number is required')),
@@ -277,7 +279,7 @@ export const visitorValidationSchema = Yup.object({
   dateTime: Yup.string().required(t('Date Time is required'))
 });
 
-const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+const today = new Date().toISOString().split('T')[0];
 
 export const attendenceValidationSchema = Yup.object({
   studentHosId: Yup.string().required(t('Student-Hostel ID is required')),

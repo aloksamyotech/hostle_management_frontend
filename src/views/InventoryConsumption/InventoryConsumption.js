@@ -12,7 +12,6 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { FormControl, FormHelperText, FormLabel, Select, MenuItem } from '@mui/material';
 import { useFormik } from 'formik';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { productConsumeValidationSchema } from 'views/Validation/validationSchema';
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
@@ -40,18 +39,22 @@ const ConsumptionInventory = (props) => {
   }, [open, editConsumeProduct]);
 
   useEffect(() => {
-    if (open) {
-      getApi(`${url.purchaseInventory.index}${hostelId}`)
-        .then((response) => {
-          const ProductNames = response.data.result.map((product) => product['productName']);
-          console.log('==>', ProductNames);
-          setAllPurchaseProducts(ProductNames);
-        })
-        .catch((error) => {
-          console.log('Product List is not Found!!', error);
-        });
-    }
-  }, [open]);
+    const fetchPurchaseInventory = async () => {
+      if (!open || !hostelId) return;
+
+      try {
+        const response = await getApi(`${url.purchaseInventory.index}${hostelId}`);
+        const productNames = response.data?.result?.map((product) => product?.productName) || [];
+
+        console.log('Fetched Product Names:', productNames);
+        setAllPurchaseProducts(productNames);
+      } catch (error) {
+        console.error('Error fetching product list:', error);
+      }
+    };
+
+    fetchPurchaseInventory();
+  }, [open, hostelId]);
 
   const formik = useFormik({
     initialValues: {
@@ -63,8 +66,6 @@ const ConsumptionInventory = (props) => {
     onSubmit: async (values) => {
       if (loading) return;
       setLoading(true);
-
-      console.log('Form is valid ====>', values);
 
       try {
         let response;
@@ -79,15 +80,12 @@ const ConsumptionInventory = (props) => {
             toast.success('Consume Added sussecesfully');
           }
         }
-        console.log('response ====>', response);
 
         if (response.status === 205) {
           toast.warning('Insufficient Consume Quantity');
-          console.log('Consume quantity cannot be greater than remaining or purchase quantity.');
         }
 
         if (response.status === 201 || response.status === 200) {
-          console.log('Inventory Consume Added Successfully !!');
           handleClose();
           toast.success('Consume Added sussecesfully');
         } else {

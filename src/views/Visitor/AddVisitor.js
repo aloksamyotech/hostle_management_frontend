@@ -9,7 +9,6 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { FormLabel, InputAdornment, IconButton, List, ListItem } from '@mui/material';
 import { useFormik } from 'formik';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import { visitorValidationSchema } from 'views/Validation/validationSchema';
@@ -21,9 +20,6 @@ import { getApi, postApi } from 'constant/api';
 const AddVisotor = (props) => {
   const { open, handleClose, hostelId } = props;
   console.log('props===>', props);
-
-  const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-
   const [studentList, setStudentList] = useState([]);
   const [filteredStudentList, setFilteredStudentList] = useState([]);
 
@@ -33,42 +29,41 @@ const AddVisotor = (props) => {
   const [loading, isLoading] = useState(false);
 
   useEffect(() => {
-    if (open) {
-      console.log('URL =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/index/${hostelId}`);
-      getApi(`${url.dashboard.studentReservation}${hostelId}`)
-        .then((response) => {
-          console.log('in hook =>', response);
-          const studentData = response.data.result
-            .filter((student) => student.status !== 'deactive')
-            .map((student) => ({
-              studentName: student.studentName,
-              studentPhoneNo: student.studentPhoneNo
-            }));
-          setStudentList(studentData);
-        })
-        .catch((error) => {
-          console.log('Error fetching student data', error);
-        });
-    }
+    const fetchStudentData = async () => {
+      try {
+        if (!open) return;
+
+        const response = await getApi(`${url.dashboard.studentReservation}${hostelId}`);
+        const studentData =
+          response?.data?.result
+            ?.filter((student) => student.status !== 'deactive')
+            ?.map((student) => ({
+              studentName: student?.studentName,
+              studentPhoneNo: student?.studentPhoneNo
+            })) || [];
+
+        setStudentList(studentData);
+      } catch (error) {
+        console.error('Error fetching student data:', error);
+      }
+    };
+
+    fetchStudentData();
   }, [open, hostelId]);
-  console.log('studentList== ==>', studentList);
 
   useEffect(() => {
-    console.log('Filtering students with phone number input:', inputValue);
     if (inputValue) {
-      console.log('inputValue======>', inputValue);
-      const filteredStudents = studentList.filter((student) => {
+      const filteredStudents = studentList?.filter((student) => {
         const phoneNo = student.studentPhoneNo?.toString();
         return phoneNo.includes(inputValue);
       });
-      console.log('Filtered students:', filteredStudents);
+
       setFilteredStudentList(filteredStudents);
     } else {
       setFilteredStudentList([]);
     }
   }, [inputValue, studentList]);
 
-  // Reset fields when dialog is closed
   useEffect(() => {
     if (!open) {
       formik.resetForm();
@@ -105,17 +100,14 @@ const AddVisotor = (props) => {
     onSubmit: async (values) => {
       if (loading) return;
       isLoading(true);
-
-      // Handle form submission here
-      console.log('Form values:==>', values);
-
       try {
         let response;
         response = await postApi(`${url.visitor.add}${hostelId}`, values);
-        console.log('response ====rohitt>', response);
-        if (response.status === 201) {
+        if (response?.status === 201) {
           toast.success('visits successfuly');
           handleClose();
+        } else {
+          toast.error('not visits SuccessFuly');
         }
       } catch (error) {
         console.log('Found Error =>', error);
@@ -166,7 +158,7 @@ const AddVisotor = (props) => {
                   error={formik.touched.studentName && !!formik.errors.studentName}
                   helperText={formik.touched.studentName && formik.errors.studentName}
                 />
-                {filteredStudentList.length > 0 && (
+                {filteredStudentList?.length > 0 && (
                   <List style={{ border: '1px solid #ddd', marginTop: 4 }}>
                     {filteredStudentList.map((student) => (
                       <ListItem

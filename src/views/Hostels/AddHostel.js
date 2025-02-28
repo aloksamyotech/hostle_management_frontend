@@ -356,7 +356,7 @@ const AddHostel = (props) => {
             }}
             style={{ textTransform: 'capitalize' }}
             color="secondary"
-            disabled={loading || formik.isSubmitting || !formik.isValid}
+            disabled={loading || formik.isSubmitting}
           >
             {loading || formik.isSubmitting ? 'Saving...' : t('Save')}
           </Button>

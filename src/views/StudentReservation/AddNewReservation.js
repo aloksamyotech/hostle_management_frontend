@@ -10,10 +10,10 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import ClearIcon from '@mui/icons-material/Clear';
 import { FormControl, FormHelperText, FormLabel, MenuItem, Select, IconButton, FormControlLabel, Radio, RadioGroup } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+
 import { useFormik } from 'formik';
 import { addStudentValidationSchema, editStudentValidationSchema } from 'views/Validation/validationSchema';
-import axios from 'axios';
+
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 import Cookies from 'js-cookie';
@@ -25,7 +25,6 @@ import { getApi, postApi, updateApi } from 'constant/api';
 
 const AddNewReservation = (props) => {
   const { open, handleClose, hostelId, editStudent } = props;
-  console.log('props=====>', props);
 
   const [roomList, setRoomList] = useState([]);
   const [states, setStates] = useState([]);
@@ -39,7 +38,6 @@ const AddNewReservation = (props) => {
   const [availableBeds, setAvailableBeds] = useState([]);
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-  //When Found editStudent Data
   useEffect(() => {
     if (open && editStudent) {
       const formatteddateOfBirth = moment(editStudent.dateOfBirth).format('YYYY-MM-DD');
@@ -76,12 +74,10 @@ const AddNewReservation = (props) => {
 
   useEffect(() => {
     if (open && hostelId) {
-      console.log('Fetching rooms URL:', `${REACT_APP_BACKEND_URL}/room/index/${hostelId}`);
       getApi(`${url.room.index}${hostelId}`)
         .then((response) => {
-          setRoomDetails(response.data.result);
-          console.log('Room response:', response.data.result);
-          const roomNumbers = response.data.result.map((room) => room.roomNumber);
+          setRoomDetails(response.data?.result);
+          const roomNumbers = response.data?.result?.map((room) => room?.roomNumber) || [];
           setRoomList(roomNumbers);
         })
         .catch((error) => {
@@ -116,8 +112,6 @@ const AddNewReservation = (props) => {
     },
     validationSchema: editStudent ? editStudentValidationSchema : addStudentValidationSchema,
     onSubmit: async (values) => {
-      console.log('Form values==>', values);
-
       const formData = new FormData();
 
       Object.keys(values).forEach((key) => {
@@ -137,14 +131,12 @@ const AddNewReservation = (props) => {
       try {
         let response;
         if (editStudent) {
-          console.log('URL =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/edit/${editStudent._id}`);
           response = await updateApi(`${url.studentReservation.edit}${editStudent._id}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
           });
         } else {
-          console.log('URL =>', `${REACT_APP_BACKEND_URL}/sudent_reservation/add/${hostelId}`);
           response = await postApi(`${url.studentReservation.add}${hostelId}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
@@ -152,10 +144,7 @@ const AddNewReservation = (props) => {
           });
         }
 
-        console.log('response=========>', response);
-
         if (response.status === 201 || response.status === 200) {
-          console.log('Student Reserve Successfully !!');
           toast.success('student reservation successfully done');
           handleClose();
         } else {
@@ -233,7 +222,9 @@ const AddNewReservation = (props) => {
             <Grid container rowSpacing={3} columnSpacing={{ xs: 0, sm: 5, md: 4 }}>
               {/*----------------------- student basic credentials ----------------------  */}
               <Grid item xs={12} sm={6} md={6}>
-                <FormLabel>{t('Student Name')}</FormLabel>
+                <FormLabel>
+                  {t('Student Name ')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <TextField
                   id="studentName"
                   name="studentName"
@@ -247,7 +238,9 @@ const AddNewReservation = (props) => {
               </Grid>
 
               <Grid item xs={12} sm={6} md={6}>
-                <FormLabel>{t('Student Phone No')}.</FormLabel>
+                <FormLabel>
+                  {t('Student Phone No')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <TextField
                   id="studentPhoneNo"
                   name="studentPhoneNo"
@@ -262,7 +255,9 @@ const AddNewReservation = (props) => {
               </Grid>
 
               <Grid item xs={12} sm={6} md={6}>
-                <FormLabel>{t('Fathers Name')}</FormLabel>
+                <FormLabel>
+                  {t('Fathers Name')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <TextField
                   id="fathersName"
                   name="fathersName"
@@ -276,7 +271,9 @@ const AddNewReservation = (props) => {
               </Grid>
 
               <Grid item xs={12} sm={6} md={6}>
-                <FormLabel>{t('Fathers Phone No')}.</FormLabel>
+                <FormLabel>
+                  {t('Fathers Phone No')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <TextField
                   id="fathersPhoneNo"
                   name="fathersPhoneNo"
@@ -291,7 +288,9 @@ const AddNewReservation = (props) => {
               </Grid>
 
               <Grid item xs={12} sm={6} md={6}>
-                <FormLabel>{t('Date Of Birth')}</FormLabel>
+                <FormLabel>
+                  {t('Date Of Birth')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <TextField
                   name="dateOfBirth"
                   type="date"
@@ -301,21 +300,32 @@ const AddNewReservation = (props) => {
                   onChange={formik.handleChange}
                   error={formik.touched.dateOfBirth && Boolean(formik.errors.dateOfBirth)}
                   helperText={formik.touched.dateOfBirth && formik.errors.dateOfBirth}
+                  InputProps={{
+                    inputProps: {
+                      min: new Date(0).toISOString().split('T')[0],
+                      max: new Date(new Date().setFullYear(new Date().getFullYear() - 5)).toISOString().split('T')[0] // 5 years before today
+                    }
+                  }}
                 />
               </Grid>
 
               <Grid item xs={12} sm={6} md={6}>
-                <FormControl fullWidth>
-                  <FormLabel>{t('Gender')}</FormLabel>
+                <FormControl fullWidth error={formik.touched.gender && Boolean(formik.errors.gender)}>
+                  <FormLabel>
+                    {t('Gender')} <span style={{ color: 'red' }}>*</span>
+                  </FormLabel>
                   <RadioGroup row name="gender" value={formik.values.gender} onChange={formik.handleChange}>
                     <FormControlLabel value="Male" control={<Radio />} label={t('Male')} />
                     <FormControlLabel value="Female" control={<Radio />} label={t('Female')} />
                   </RadioGroup>
+                  {formik.touched.gender && formik.errors.gender && <FormHelperText>{formik.errors.gender}</FormHelperText>}
                 </FormControl>
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <FormLabel>{t('Email ID')}</FormLabel>
+                <FormLabel>
+                  {t('Email ID')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <TextField
                   id="email"
                   name="email"
@@ -329,7 +339,9 @@ const AddNewReservation = (props) => {
               </Grid>
 
               <Grid item xs={12} sm={6} md={6}>
-                <FormLabel>{t('Photo')}</FormLabel>
+                <FormLabel>
+                  {t('Photo')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <input
                   id="studentphoto"
                   name="studentphoto"
@@ -350,7 +362,9 @@ const AddNewReservation = (props) => {
               </Grid>
 
               <Grid item xs={12} sm={6} md={6}>
-                <FormLabel>{t('State')}</FormLabel>
+                <FormLabel>
+                  {t('State')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <Select id="state" name="state" size="small" fullWidth value={formik.values.state} onChange={handleStateChange}>
                   <MenuItem value="">{t('Select State')}</MenuItem>
                   {states.map((state) => (
@@ -363,7 +377,9 @@ const AddNewReservation = (props) => {
               </Grid>
 
               <Grid item xs={12} sm={6} md={6}>
-                <FormLabel>{t('City')}</FormLabel>
+                <FormLabel>
+                  {t('City')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <Select id="city" name="city" size="small" fullWidth value={formik.values.city} onChange={formik.handleChange}>
                   <MenuItem value="">{t('Select City')}</MenuItem>
                   {cities.map((city) => (
@@ -376,7 +392,9 @@ const AddNewReservation = (props) => {
               </Grid>
 
               <Grid item xs={12} sm={12} md={12}>
-                <FormLabel>{t('Address')}</FormLabel>
+                <FormLabel>
+                  {t('Address')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <TextField
                   id="address"
                   name="address"
@@ -392,7 +410,9 @@ const AddNewReservation = (props) => {
               </Grid>
 
               <Grid item xs={12} sm={6} md={6}>
-                <FormLabel>{t('AadharCard Photo')}</FormLabel>
+                <FormLabel>
+                  {t('AadharCard Photo')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <input
                   id="aadharcardphoto"
                   name="aadharcardphoto"
@@ -417,7 +437,9 @@ const AddNewReservation = (props) => {
 
               {/* Room Number Selection */}
               <Grid item xs={12} sm={6} md={6}>
-                <FormLabel>{t('Room Number')}</FormLabel>
+                <FormLabel>
+                  {t('Room Number')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <Select
                   id="roomNumber"
                   name="roomNumber"
@@ -437,33 +459,34 @@ const AddNewReservation = (props) => {
                 {formik.touched.roomNumber && formik.errors.roomNumber && <FormHelperText error>{formik.errors.roomNumber}</FormHelperText>}
               </Grid>
 
-              {/* Bed ID Selection (Only shown when a room is selected) */}
-              {formik.values.roomNumber && availableBeds.length > 0 && (
-                <Grid item xs={12} sm={6} md={6}>
-                  <FormLabel>{t('Bed ID')}</FormLabel>
-                  <Select
-                    id="bedId"
-                    name="bedId"
-                    size="small"
-                    fullWidth
-                    value={formik.values.bedId}
-                    onChange={formik.handleChange}
-                    error={formik.touched.bedId && !!formik.errors.bedId}
-                  >
-                    <MenuItem value="">Select Bed ID</MenuItem>
-                    {availableBeds.map((bed) => (
-                      <MenuItem key={bed.bedId} value={bed.bedId}>
-                        {bed.bedId}
-                      </MenuItem>
-                    ))}
-                  </Select>
+              <Grid item xs={12} sm={6} md={6}>
+                <FormLabel>
+                  {t('Bed ID')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
+                <Select
+                  id="bedId"
+                  name="bedId"
+                  size="small"
+                  fullWidth
+                  value={formik.values.bedId}
+                  onChange={formik.handleChange}
+                  error={formik.touched.bedId && !!formik.errors.bedId}
+                >
+                  <MenuItem value="">Select Bed ID</MenuItem>
+                  {availableBeds.map((bed, index) => (
+                    <MenuItem key={bed.bedId} value={bed.bedId}>
+                      {index + 1}
+                    </MenuItem>
+                  ))}
+                </Select>
 
-                  {formik.touched.bedId && formik.errors.bedId && <FormHelperText error>{formik.errors.bedId}</FormHelperText>}
-                </Grid>
-              )}
+                {formik.touched.bedId && formik.errors.bedId && <FormHelperText error>{formik.errors.bedId}</FormHelperText>}
+              </Grid>
 
               <Grid item xs={12} sm={6} md={6}>
-                <FormLabel>{t('Start Date')}</FormLabel>
+                <FormLabel>
+                  {t('Start Date')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <TextField
                   id="startDate"
                   name="startDate"
@@ -474,11 +497,14 @@ const AddNewReservation = (props) => {
                   onChange={formik.handleChange}
                   error={formik.touched.startDate && !!formik.errors.startDate}
                   helperText={formik.touched.startDate && formik.errors.startDate}
+                  inputProps={{
+                    min: new Date().toISOString().split('T')[0]
+                  }}
                 />
               </Grid>
 
               <Grid item xs={12} sm={6} md={6}>
-                <FormLabel>{t('End Date')}</FormLabel>
+                {/* <FormLabel>{t('End Date')}</FormLabel>
                 <TextField
                   id="endDate"
                   name="endDate"
@@ -489,6 +515,30 @@ const AddNewReservation = (props) => {
                   onChange={formik.handleChange}
                   error={formik.touched.endDate && !!formik.errors.endDate}
                   helperText={formik.touched.endDate && formik.errors.endDate}
+                /> */}
+
+                <FormLabel>
+                  {t('End Date')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
+                <TextField
+                  id="endDate"
+                  name="endDate"
+                  type="date"
+                  size="small"
+                  fullWidth
+                  value={formik.values.endDate}
+                  onChange={formik.handleChange}
+                  error={formik.touched.endDate && !!formik.errors.endDate}
+                  helperText={formik.touched.endDate && formik.errors.endDate}
+                  InputProps={{
+                    inputProps: {
+                      min: formik.values.startDate
+                        ? new Date(new Date(formik.values.startDate).setMonth(new Date(formik.values.startDate).getMonth() + 1))
+                            .toISOString()
+                            .split('T')[0]
+                        : ''
+                    }
+                  }}
                 />
               </Grid>
 
@@ -538,6 +588,7 @@ const AddNewReservation = (props) => {
                   onChange={formik.handleChange}
                   error={formik.touched.libraryAmount && !!formik.errors.libraryAmount}
                   helperText={formik.touched.libraryAmount && formik.errors.libraryAmount}
+                  disabled={!formik.values.isLibrary} // Disable if Library Facility is "No"
                 />
               </Grid>
 
@@ -553,11 +604,14 @@ const AddNewReservation = (props) => {
                   onChange={formik.handleChange}
                   error={formik.touched.foodAmount && !!formik.errors.foodAmount}
                   helperText={formik.touched.foodAmount && formik.errors.foodAmount}
+                  disabled={!formik.values.isFood}
                 />
               </Grid>
 
               <Grid item xs={12} sm={6} md={6}>
-                <FormLabel>{t('Hostel Rent / Per Bed Rent')}</FormLabel>
+                <FormLabel>
+                  {t('Hostel Rent / Per Bed Rent')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <TextField
                   id="hostelRent"
                   name="hostelRent"
@@ -572,7 +626,9 @@ const AddNewReservation = (props) => {
               </Grid>
 
               <Grid item xs={12} sm={6} md={6}>
-                <FormLabel>{t('Advance Payment')}</FormLabel>
+                <FormLabel>
+                  {t('Advance Payment')} <span style={{ color: 'red' }}>*</span>
+                </FormLabel>
                 <TextField
                   id="advancePayment"
                   name="advancePayment"

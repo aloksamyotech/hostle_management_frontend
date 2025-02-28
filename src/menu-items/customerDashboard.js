@@ -17,7 +17,8 @@ import {
   IconMenu,
   IconCategory,
   IconReceipt,
-  IconUserPlus
+  IconUserPlus,
+  IconAlignBoxBottomCenter
 } from '@tabler/icons';
 
 // constant
@@ -39,7 +40,8 @@ const icons = {
   IconMenu,
   IconCategory,
   IconReceipt,
-  IconUserPlus
+  IconUserPlus,
+  IconAlignBoxBottomCenter
 };
 import i18n from 'i18n';
 // ==============================|| SUB ADMIN USERS DASHBOARD MENU ITEMS ||============================== //
@@ -156,7 +158,7 @@ const subdashboard = {
       title: i18n.t('Room Type'),
       type: 'item',
       url: '/dashboard/type',
-      icon: IconCategory,
+      icon: IconAlignBoxBottomCenter,
       breadcrumbs: false
     }
   ]

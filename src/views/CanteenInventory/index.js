@@ -26,7 +26,6 @@ import Iconify from '../../ui-component/iconify';
 import AddInventory from './AddInventory';
 import { EditOutlined, VisibilityOutlined, DeleteOutline } from '@mui/icons-material';
 import Cookies from 'js-cookie';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import * as XLSX from 'xlsx';
@@ -87,32 +86,24 @@ const CanteenInventory = () => {
     }
     fetchInventory(HosId);
   }, []);
-  console.log('hostelId=========>', hostelId);
 
   const fetchInventory = async (hostelId) => {
     try {
-      console.log('URL=>', `${REACT_APP_BACKEND_URL}/canteen_inventory/index/${hostelId}`);
       const response = await getApi(`${url.canteenInventory.index}${hostelId}`);
-      console.log('response fetch ===> ', response);
       setAllInventory(response.data.result);
       setTotalCount(response.data.totalRecodes);
     } catch (error) {
       console.error('Error fetching inventory data:', error);
     }
   };
-  console.log('allInventory==>', allInventory);
 
   const handleEdit = (id) => {
-    console.log(`Edit clicked for ID: ${id}`);
     setOpenAdd(true);
     let inventory = allInventory.find((inventory) => inventory._id === id);
-    console.log('inventory==>', inventory);
     setEditInventory(inventory);
   };
-  console.log('editInventory=>', editInventory);
 
   const handleDelete = (id) => {
-    console.log(`Delete clicked for ID: ${id}`);
     setOpenDeleteDialog(true);
     setDeleteInventoryId(id);
   };
@@ -123,7 +114,6 @@ const CanteenInventory = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      console.log('URL =>', `${REACT_APP_BACKEND_URL}/canteen_inventory/delete/${deleteInventoryId}`);
       let response = await deleteApi(`${url.canteenInventory.delete}${deleteInventoryId}`);
       console.log('delete =====> response =====>', response);
 
@@ -160,7 +150,7 @@ const CanteenInventory = () => {
 
       try {
         const response = await postApi(`${url.canteenInventory.importFile}${hostelId}`, jsonData);
-        console.log('yha hai response ==>', response);
+
         if (response.status === 200) {
           fetchInventory(hostelId);
         } else {
@@ -252,17 +242,17 @@ const CanteenInventory = () => {
                         {index + 1}
                       </TableCell>
                       <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
-                        {row.productName}
+                        {row?.productName}
                       </TableCell>
                       <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
-                        {row.mesurment}
+                        {row?.mesurment}
                       </TableCell>
                       <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
                         <Stack direction="row" justifyContent={'center'}>
-                          <IconButton onClick={() => handleEdit(row._id)} aria-label="edit" style={{ color: 'green' }}>
+                          <IconButton onClick={() => handleEdit(row?._id)} aria-label="edit" style={{ color: 'green' }}>
                             <EditOutlined />
                           </IconButton>
-                          <IconButton onClick={() => handleDelete(row._id)} aria-label="delete" style={{ color: 'red' }}>
+                          <IconButton onClick={() => handleDelete(row?._id)} aria-label="delete" style={{ color: 'red' }}>
                             <DeleteOutline />
                           </IconButton>
                         </Stack>

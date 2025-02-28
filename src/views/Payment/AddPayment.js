@@ -17,7 +17,7 @@ import {
   ListItem
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
-import axios from 'axios';
+
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { paymentValidationSchema } from 'views/Validation/validationSchema';
@@ -26,28 +26,26 @@ import { toast } from 'react-toastify';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
 import { getApi, postApi } from 'constant/api.js';
+
 const AddPayment = (props) => {
-  console.log('In Add Payment =>', props);
   const { open, handleClose, hostelId, currentStudent } = props;
-  const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   const [studentList, setStudentList] = useState([]);
-
   const [filteredStudentList, setFilteredStudentList] = useState([]);
-
   const [inputValue, setInputValue] = useState('');
-
+  const [availableMonths, setAvailableMonths] = useState([]);
   const [selectedStudentName, setSelectedStudentName] = useState('');
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (open) {
-      console.log('URL =>', `${url.payments.index}${hostelId}`);
       getApi(`${url.payments.index}${hostelId}`)
         .then((response) => {
-          console.log('in hook =>', response);
           const studentData = response.data.result.map((student) => ({
             studentName: student.studentName,
-            studentPhoneNo: student.studentPhoneNo
+            studentPhoneNo: student.studentPhoneNo,
+            startDate: new Date(student.startDate),
+            endDate: new Date(student.endDate)
           }));
           setStudentList(studentData);
         })
@@ -56,25 +54,42 @@ const AddPayment = (props) => {
         });
     }
   }, [open, hostelId]);
-  console.log('studentList==>', studentList);
+
+  const getMonthsInRange = (startDate, endDate) => {
+    const months = [];
+    let currentMonth = startDate.getMonth();
+    let currentYear = startDate.getFullYear();
+
+    while (currentYear < endDate.getFullYear() || (currentYear === endDate.getFullYear() && currentMonth <= endDate.getMonth())) {
+      months.push(new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' }));
+      currentMonth++;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+    }
+
+    return months;
+  };
 
   useEffect(() => {
-    console.log('Filtering students with phone number input:', inputValue);
     if (inputValue) {
       const filteredStudents = studentList.filter((student) => {
         const phoneNo = student.studentPhoneNo?.toString();
         return phoneNo.includes(inputValue);
       });
-      console.log('Filtered students:', filteredStudents);
       setFilteredStudentList(filteredStudents);
     } else {
       setFilteredStudentList([]);
     }
   }, [inputValue, studentList]);
 
-  const handleStudentSelect = (name) => {
+  const handleStudentSelect = (name, startDate, endDate) => {
     setSelectedStudentName(name);
     setInputValue(name);
+
+    const availableMonths = getMonthsInRange(new Date(startDate), new Date(endDate));
+    setAvailableMonths(availableMonths);
     setFilteredStudentList([]);
   };
 
@@ -90,15 +105,14 @@ const AddPayment = (props) => {
       paymentDate: '',
       paymentType: '',
       paymentAmount: '',
-      paymentAttachment: ''
+      paymentAttachment: '',
+      startDate: '',
+      endDate: ''
     },
     validationSchema: paymentValidationSchema,
-
     onSubmit: async (values) => {
       if (loading) return;
-
       setLoading(true);
-      console.log('Loading set to true');
 
       const formData = new FormData();
       formData.append('studentName', selectedStudentName);
@@ -111,30 +125,24 @@ const AddPayment = (props) => {
 
       try {
         let response;
-
         if (currentStudent) {
           console.log('in if');
         } else {
           response = await postApi(`${url.payments.add}${hostelId}`, formData);
         }
 
-        if (response.status === 201 || response.status === 200) {
-          console.log('Payment added successfully!');
+        if (response?.status === 201 || response?.status === 200) {
           toast.success('Payment successfully done');
           setLoading(false);
           handleClose();
         } else {
-          console.error('Failed to save data');
+          toast.error('Failed to save data');
         }
       } catch (error) {
         console.log('Error while submitting the form', error);
       }
     }
   });
-
-  useEffect(() => {
-    console.log('Loading state changed:', loading);
-  }, [loading]);
 
   useEffect(() => {
     if (open) {
@@ -175,10 +183,36 @@ const AddPayment = (props) => {
                 helperText={formik.touched.studentName && formik.errors.studentName}
               />
               {filteredStudentList.length > 0 && (
-                <List style={{ border: '1px solid #ddd', marginTop: 4 }}>
+                <List
+                  style={{
+                    border: '1px solid #ddd',
+                    marginTop: 4,
+                    maxHeight: '200px', // Limit height for overflow
+                    overflowY: 'auto', // Enable scrolling if the list exceeds the max height
+                    borderRadius: '4px'
+                  }}
+                >
                   {filteredStudentList.map((student) => (
-                    <ListItem key={student.studentPhoneNo} onClick={() => handleStudentSelect(student.studentName)}>
-                      {student.studentName}
+                    <ListItem
+                      key={student.studentPhoneNo}
+                      onClick={() => handleStudentSelect(student.studentName, student.startDate, student.endDate)}
+                      style={{
+                        padding: '8px 16px',
+                        cursor: 'pointer',
+                        backgroundColor: '#fff',
+                        transition: 'background-color 0.3s ease',
+                        borderBottom: '1px solid #f0f0f0'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = '#f5f5f5';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = '#fff';
+                      }}
+                    >
+                      <Typography variant="body1" style={{ fontWeight: '500' }}>
+                        {student.studentName}
+                      </Typography>
                     </ListItem>
                   ))}
                 </List>
@@ -200,21 +234,19 @@ const AddPayment = (props) => {
                 <MenuItem value="">
                   <em>{t('Select Month')}</em>
                 </MenuItem>
-                <MenuItem value="January">{t('January')}</MenuItem>
-                <MenuItem value="February">{t('February')}</MenuItem>
-                <MenuItem value="March">{t('March')}</MenuItem>
-                <MenuItem value="April">{t('April')}</MenuItem>
-                <MenuItem value="May">{t('May')}</MenuItem>
-                <MenuItem value="June">{t('June')}</MenuItem>
-                <MenuItem value="July">{t('July')}</MenuItem>
-                <MenuItem value="August">{t('August')}</MenuItem>
-                <MenuItem value="September">{t('September')}</MenuItem>
-                <MenuItem value="October">{t('October')}</MenuItem>
-                <MenuItem value="November">{t('November')}</MenuItem>
-                <MenuItem value="December">{t('Decembe')}</MenuItem>
+                {availableMonths.length > 0 ? (
+                  availableMonths.map((month, index) => (
+                    <MenuItem key={index} value={month}>
+                      {t(month)}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>{t('No available months')}</MenuItem>
+                )}
               </TextField>
               {formik.touched.month && formik.errors.month && <FormHelperText error>{formik.errors.month}</FormHelperText>}
             </Grid>
+
             <Grid item xs={12} sm={6}>
               <FormLabel>{t('Date')}</FormLabel>
               <TextField
@@ -230,6 +262,7 @@ const AddPayment = (props) => {
                 helperText={formik.touched.paymentDate && formik.errors.paymentDate}
               />
             </Grid>
+
             <Grid item xs={12}>
               <FormLabel>{t('Payment Method')}</FormLabel>
               <TextField
@@ -253,6 +286,7 @@ const AddPayment = (props) => {
                 <FormHelperText error>{formik.errors.paymentType}</FormHelperText>
               )}
             </Grid>
+
             <Grid item xs={12}>
               <FormLabel>{t('Payment Amount')}</FormLabel>
               <TextField
@@ -267,26 +301,27 @@ const AddPayment = (props) => {
                 helperText={formik.touched.paymentAmount && formik.errors.paymentAmount}
               />
             </Grid>
+
             <Grid item xs={12}>
-              <FormLabel>{t('Payment Attachment (optional)')}</FormLabel>
+              <FormLabel>{t('Payment Attachment (Optional)')}</FormLabel>
               <TextField
                 id="paymentAttachment"
                 name="paymentAttachment"
-                type="file"
                 size="small"
+                type="file"
                 fullWidth
-                onChange={(event) => {
-                  const file = event.currentTarget.files[0];
-                  formik.setFieldValue('paymentAttachment', file);
-                }}
+                onChange={(e) => formik.setFieldValue('paymentAttachment', e.target.files[0])}
+                error={formik.touched.paymentAttachment && !!formik.errors.paymentAttachment}
+                helperText={formik.touched.paymentAttachment && formik.errors.paymentAttachment}
               />
-              {formik.touched.paymentAttachment && formik.errors.paymentAttachment && (
-                <FormHelperText error>{formik.errors.paymentAttachment}</FormHelperText>
-              )}
             </Grid>
+
+            <input type="hidden" name="startDate" value={formik.values.startDate} onChange={formik.handleChange} />
+            <input type="hidden" name="endDate" value={formik.values.endDate} onChange={formik.handleChange} />
           </Grid>
+
           <DialogActions>
-            <Button onClick={formik.handleSubmit} variant="contained" color="primary" type="submit" disabled={loading || !formik.isValid}>
+            <Button variant="contained" color="primary" type="submit" disabled={loading || !formik.isValid}>
               {loading ? 'Saving...' : t('Save')}
             </Button>
 
@@ -299,4 +334,5 @@ const AddPayment = (props) => {
     </Dialog>
   );
 };
+
 export default AddPayment;

@@ -124,6 +124,10 @@ export const url = {
   },
   ragistraion: {
     login: `${base}/administrator/login`
+  },
+  navigates: {
+    view_profile: '/dashboard/student_reservation/view_profile/',
+    roomview: '/dashboard/room/view/'
   }
 };
 

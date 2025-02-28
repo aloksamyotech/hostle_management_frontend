@@ -33,6 +33,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import { t } from 'i18next';
 import url from '../../constant/url.js';
 import { deleteApi, getApi } from 'constant/api';
+import { toast } from 'react-toastify';
 const HeaderCell = styled(MuiTableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
   color: theme.palette.common.black,
@@ -74,6 +75,7 @@ const NoticeBoard = (props) => {
 
   const handleCloseAdd = () => {
     setOpenAdd(false);
+
     fetchNotices(hostelId);
   };
 
@@ -118,9 +120,10 @@ const NoticeBoard = (props) => {
 
   const handleConfirmDelete = async () => {
     try {
-      console.log('URL =>', `${REACT_APP_BACKEND_URL}/notice_board/delete/${deleteNoticeId}`);
       let response = await deleteApi(`${url.roomtype.delete}${deleteNoticeId}`);
-      console.log('delete =====> response =====>', response);
+      if (response.status == 200) {
+        toast.success('Room Type has successfuly deleted');
+      }
       setOpenDeleteDialog(false);
       fetchNotices(hostelId);
     } catch (error) {
