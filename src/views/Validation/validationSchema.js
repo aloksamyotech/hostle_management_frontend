@@ -265,7 +265,8 @@ export const editStudentValidationSchema = Yup.object({
 export const studentComplaintValidationSchema = Yup.object({
   datetime: Yup.date().min(new Date(), t('Date must be today or later')).required(t('Date and time are required')),
   problemDescription: Yup.string().required(t('Problem Description is required')),
-  status: Yup.string().required(t('Status is required'))
+  status: Yup.string().required(t('Status is required')),
+  studentName: Yup.string().required('please  select the user')
 });
 
 export const visitorValidationSchema = Yup.object({

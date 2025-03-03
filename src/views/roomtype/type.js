@@ -66,32 +66,32 @@ const AddRoomTypeForm = ({ hostelId, open, handleClose }) => {
             required
             autoFocus
           />
+
+          <DialogActions>
+            <Button
+              type="submit"
+              variant="contained"
+              onClick={formik.handleSubmit}
+              style={{ textTransform: 'capitalize' }}
+              color="secondary"
+              disabled={loading}
+            >
+              {t('Save')}
+            </Button>
+            <Button
+              type="reset"
+              variant="outlined"
+              style={{ textTransform: 'capitalize' }}
+              onClick={() => {
+                handleCancel();
+              }}
+              color="error"
+            >
+              {t('Cancel')}
+            </Button>
+          </DialogActions>
         </form>
       </DialogContent>
-      <DialogActions>
-        <Button
-          type="submit"
-          variant="contained"
-          onClick={formik.handleSubmit}
-          style={{ textTransform: 'capitalize' }}
-          color="secondary"
-          disabled={loading}
-        >
-          {t('Save')}
-        </Button>
-        <Button
-          type="reset"
-          variant="outlined"
-          style={{ textTransform: 'capitalize' }}
-          onClick={() => {
-            formik.resetForm();
-            handleClose();
-          }}
-          color="error"
-        >
-          {t('Cancel')}
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 };

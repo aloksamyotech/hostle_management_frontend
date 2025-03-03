@@ -349,13 +349,9 @@ const AddHostel = (props) => {
           <Button
             type="submit"
             variant="contained"
-            onClick={() => {
-              if (!loading && formik.isValid) {
-                formik.handleSubmit();
-              }
-            }}
-            style={{ textTransform: 'capitalize' }}
             color="secondary"
+            onClick={formik.handleSubmit}
+            style={{ textTransform: 'capitalize' }}
             disabled={loading || formik.isSubmitting}
           >
             {loading || formik.isSubmitting ? 'Saving...' : t('Save')}

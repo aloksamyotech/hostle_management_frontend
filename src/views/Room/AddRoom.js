@@ -29,11 +29,12 @@ const roomValidationSchema = yup.object().shape({
     .string()
     .matches(/^[a-zA-Z0-9]{1,4}$/, t('Room number must be 1 to 4 characters (letters or numbers)'))
     .max(4, t('Room number cannot exceed 4 characters'))
-    .required(t('Room number is required'))
+    .required(t('Room number is required')),
+  roomType: yup.string().required('Room type is required'),
+  roomphoto: yup.mixed().required('Room photo is required')
 });
 
 const AddRoom = ({ open, handleClose, hostelId, editRoom }) => {
-  const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   const [type, setType] = useState([]);
   const [loading, setLoading] = useState(false);
   const formik = useFormik({
@@ -166,11 +167,7 @@ const AddRoom = ({ open, handleClose, hostelId, editRoom }) => {
             <Button
               type="submit"
               variant="contained"
-              onClick={() => {
-                if (!loading && formik.isValid) {
-                  formik.handleSubmit();
-                }
-              }}
+              onClick={formik.handleSubmit}
               style={{ textTransform: 'capitalize' }}
               color="secondary"
               disabled={loading}

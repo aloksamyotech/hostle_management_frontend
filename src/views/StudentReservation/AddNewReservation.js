@@ -472,12 +472,17 @@ const AddNewReservation = (props) => {
                   onChange={formik.handleChange}
                   error={formik.touched.bedId && !!formik.errors.bedId}
                 >
-                  <MenuItem value="">Select Bed ID</MenuItem>
-                  {availableBeds.map((bed, index) => (
-                    <MenuItem key={bed.bedId} value={bed.bedId}>
-                      {index + 1}
-                    </MenuItem>
-                  ))}
+                  <MenuItem value="">{t('Select Bed ID')}</MenuItem>
+
+                  {availableBeds.length === 0 ? (
+                    <MenuItem disabled>{t('No beds available')}</MenuItem>
+                  ) : (
+                    availableBeds.map((bed, index) => (
+                      <MenuItem key={bed.bedId} value={bed.bedId}>
+                        {bed.bedId.slice(0, 3)}
+                      </MenuItem>
+                    ))
+                  )}
                 </Select>
 
                 {formik.touched.bedId && formik.errors.bedId && <FormHelperText error>{formik.errors.bedId}</FormHelperText>}
@@ -504,19 +509,6 @@ const AddNewReservation = (props) => {
               </Grid>
 
               <Grid item xs={12} sm={6} md={6}>
-                {/* <FormLabel>{t('End Date')}</FormLabel>
-                <TextField
-                  id="endDate"
-                  name="endDate"
-                  type="date"
-                  size="small"
-                  fullWidth
-                  value={formik.values.endDate}
-                  onChange={formik.handleChange}
-                  error={formik.touched.endDate && !!formik.errors.endDate}
-                  helperText={formik.touched.endDate && formik.errors.endDate}
-                /> */}
-
                 <FormLabel>
                   {t('End Date')} <span style={{ color: 'red' }}>*</span>
                 </FormLabel>
@@ -588,7 +580,7 @@ const AddNewReservation = (props) => {
                   onChange={formik.handleChange}
                   error={formik.touched.libraryAmount && !!formik.errors.libraryAmount}
                   helperText={formik.touched.libraryAmount && formik.errors.libraryAmount}
-                  disabled={!formik.values.isLibrary} // Disable if Library Facility is "No"
+                  disabled={!formik.values.isLibrary}
                 />
               </Grid>
 

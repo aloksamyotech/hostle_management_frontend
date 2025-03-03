@@ -187,8 +187,8 @@ const AddPayment = (props) => {
                   style={{
                     border: '1px solid #ddd',
                     marginTop: 4,
-                    maxHeight: '200px', // Limit height for overflow
-                    overflowY: 'auto', // Enable scrolling if the list exceeds the max height
+                    maxHeight: '200px',
+                    overflowY: 'auto',
                     borderRadius: '4px'
                   }}
                 >
@@ -321,7 +321,7 @@ const AddPayment = (props) => {
           </Grid>
 
           <DialogActions>
-            <Button variant="contained" color="primary" type="submit" disabled={loading || !formik.isValid}>
+            <Button variant="contained" color="primary" type="submit" disabled={loading}>
               {loading ? 'Saving...' : t('Save')}
             </Button>
 
